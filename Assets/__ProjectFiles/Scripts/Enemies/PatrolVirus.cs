@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using UnityEngine;
 
 namespace Orpaits.Enemies
@@ -9,9 +8,13 @@ namespace Orpaits.Enemies
     /// Supports two patrol modes: Waypoints (transform list) or Range (left/right bounds).
     /// Destroyed by a single Data Disc projectile hit.
     ///
+    /// Movement uses Rigidbody2D.velocity in FixedUpdate for smooth physics-based
+    /// motion with proper collision response and interpolation support.
+    ///
     /// Design reference: mechanics-260712_2137.md §8 (Virus Enemy),
     /// level-design-260712_2153.md (Viruses section)
     /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
     public class PatrolVirus : BaseEnemy
     {
         public enum PatrolMode
@@ -45,6 +48,10 @@ namespace Orpaits.Enemies
         [Tooltip("Ordered waypoints the virus patrols between")]
         private Transform[] waypoints;
 
+        [Header("Physics")]
+        [SerializeField]
+        private Rigidbody2D rb;
+
         [Header("Visual")]
         [SerializeField]
         [Tooltip("Sprite to flip based on movement direction")]
@@ -56,94 +63,91 @@ namespace Orpaits.Enemies
         private Vector2 startPosition;
         private int currentWaypointIndex;
         private bool movingRight = true;
-        private CancellationTokenSource cts;
 
         protected override void Awake()
         {
             base.Awake();
             startPosition = transform.position;
+            if (rb == null) rb = GetComponent<Rigidbody2D>();
         }
 
-        private void Start()
+        private void FixedUpdate()
         {
-            cts = new CancellationTokenSource();
-            _ = PatrolLoopAsync(cts.Token);
-        }
+            if (IsDead) return;
 
-        private async Awaitable PatrolLoopAsync(CancellationToken ct)
-        {
-            while (!ct.IsCancellationRequested && !IsDead)
+            Vector2 velocity = rb.velocity;
+            velocity.y = rb.velocity.y; // preserve vertical (gravity etc.)
+
+            switch (patrolMode)
             {
-                float step = moveSpeed * Time.deltaTime;
+                case PatrolMode.Range:
+                    velocity.x = PatrolRangeVelocity();
+                    break;
 
-                switch (patrolMode)
-                {
-                    case PatrolMode.Range:
-                        PatrolRange(step);
-                        break;
-
-                    case PatrolMode.Waypoints:
-                        PatrolWaypoints(step);
-                        break;
-                }
-
-                await Awaitable.NextFrameAsync();
+                case PatrolMode.Waypoints:
+                    velocity.x = PatrolWaypointsVelocity();
+                    break;
             }
+
+            rb.velocity = velocity;
         }
 
-        private void PatrolRange(float step)
+        // ── Range Mode ──────────────────────────────────────────────────────
+
+        private float PatrolRangeVelocity()
         {
             if (movingRight)
             {
-                transform.Translate(Vector2.right * step);
                 if (transform.position.x >= rightBound)
                 {
                     movingRight = false;
                     OnDirectionChanged?.Invoke(false);
                     if (flipSpriteOnDirection) FlipSprite(false);
+                    return -moveSpeed;
                 }
+                return moveSpeed;
             }
             else
             {
-                transform.Translate(Vector2.left * step);
                 if (transform.position.x <= leftBound)
                 {
                     movingRight = true;
                     OnDirectionChanged?.Invoke(true);
                     if (flipSpriteOnDirection) FlipSprite(true);
+                    return moveSpeed;
                 }
+                return -moveSpeed;
             }
         }
 
-        private void PatrolWaypoints(float step)
+        // ── Waypoint Mode ───────────────────────────────────────────────────
+
+        private float PatrolWaypointsVelocity()
         {
             if (waypoints == null || waypoints.Length == 0)
-                return;
+                return 0f;
 
             Transform target = waypoints[currentWaypointIndex];
-            if (target == null) return;
+            if (target == null) return 0f;
 
-            Vector2 currentPos = transform.position;
-            Vector2 targetPos = target.position;
-            float distance = Vector2.Distance(currentPos, targetPos);
+            float distanceX = target.position.x - transform.position.x;
 
-            if (distance < 0.05f)
+            if (Mathf.Abs(distanceX) < 0.1f)
             {
                 // Reached waypoint, move to next
                 currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-                return;
+                return 0f;
             }
 
-            Vector2 direction = (targetPos - currentPos).normalized;
-            transform.Translate(direction * step);
+            float direction = Mathf.Sign(distanceX);
 
-            // Flip sprite based on horizontal direction
             if (flipSpriteOnDirection)
-            {
-                bool facingRight = direction.x > 0f;
-                FlipSprite(facingRight);
-            }
+                FlipSprite(direction > 0f);
+
+            return direction * moveSpeed;
         }
+
+        // ── Visual ──────────────────────────────────────────────────────────
 
         private void FlipSprite(bool facingRight)
         {
@@ -151,6 +155,8 @@ namespace Orpaits.Enemies
             scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
             transform.localScale = scale;
         }
+
+        // ── Combat ──────────────────────────────────────────────────────────
 
         protected virtual void OnCollisionStay2D(Collision2D collision)
         {
@@ -171,22 +177,14 @@ namespace Orpaits.Enemies
 
         protected override void Die()
         {
-            // Disable patrol loop
-            cts?.Cancel();
-
-            // Brief death effect before destroying
+            rb.velocity = Vector2.zero;
+            rb.simulated = false;
             spriteRenderer.enabled = false;
             base.Die();
-
-            // Destroy the GameObject after a short delay
             Destroy(gameObject, 0.3f);
         }
 
-        private void OnDestroy()
-        {
-            cts?.Cancel();
-            cts?.Dispose();
-        }
+        // ── Gizmos ──────────────────────────────────────────────────────────
 
         private void OnDrawGizmosSelected()
         {
