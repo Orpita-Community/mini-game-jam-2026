@@ -6,17 +6,21 @@ namespace Orpaits.Enemies
 {
     /// <summary>
     /// A corrupted file projectile thrown by the Boss Virus during Phase 1 (The Spam).
-    /// Moves continuously forward (transform.right) until it hits something or its lifetime expires.
-    /// Uses object pooling via GameObjectPool — overrides Destroy with pool return.
+    /// Moves continuously forward via Rigidbody2D.velocity — set once on spawn,
+    /// physics handles the rest. Uses object pooling.
     ///
     /// Design reference: level-design-260712_2153.md (Boss Fight — Phase 1)
     /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
     public class CorruptedProjectile : MonoBehaviour, IPoolable
     {
         [Header("Movement")]
         [SerializeField]
         private float speed = 4f;
+
+        [SerializeField]
+        private float lifetime = 5f;
 
         [Header("Damage")]
         [SerializeField]
@@ -26,8 +30,17 @@ namespace Orpaits.Enemies
         [SerializeField]
         private LayerMask destroyOnLayers = ~0;
 
+        [Header("Physics")]
+        [SerializeField]
+        private Rigidbody2D rb;
+
         private CancellationTokenSource cts;
         private GameObjectPool ownerPool;
+
+        private void Awake()
+        {
+            if (rb == null) rb = GetComponent<Rigidbody2D>();
+        }
 
         /// <summary>
         /// Assign the pool this projectile returns to.
@@ -40,6 +53,9 @@ namespace Orpaits.Enemies
 
         public void OnPoolGet()
         {
+            // Set velocity once — physics moves it forward continuously
+            rb.velocity = transform.right * speed;
+
             cts?.Dispose();
             cts = new CancellationTokenSource();
             _ = LifetimeAsync(cts.Token);
@@ -50,21 +66,14 @@ namespace Orpaits.Enemies
             cts?.Cancel();
             cts?.Dispose();
             cts = null;
-        }
 
-        /// <summary>
-        /// Each frame: move continuously in the projectile's forward direction.
-        /// No direction parameter — just set the transform rotation on spawn.
-        /// </summary>
-        private void Update()
-        {
-            if (enabled)
-                transform.Translate(speed * Time.deltaTime * Vector2.right);
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
 
         private async Awaitable LifetimeAsync(CancellationToken ct)
         {
-            await Awaitable.WaitForSecondsAsync(lifetime);
+            await Awaitable.WaitForSecondsAsync(lifetime, ct);
             if (!ct.IsCancellationRequested)
                 ReturnToPool();
         }
@@ -98,8 +107,6 @@ namespace Orpaits.Enemies
                 Destroy(gameObject);
             }
         }
-
-        private float lifetime = 5f;
 
         private void OnDestroy()
         {
