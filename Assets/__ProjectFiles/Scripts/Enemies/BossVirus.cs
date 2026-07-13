@@ -33,6 +33,9 @@ namespace Orpaits.Enemies
         private GameObject corruptedProjectilePrefab;
 
         [SerializeField]
+        private Core.GameObjectPool projectilePool;
+
+        [SerializeField]
         private Transform[] projectileSpawnPoints;
 
         [SerializeField]
@@ -144,19 +147,18 @@ namespace Orpaits.Enemies
 
         private void FireProjectileVolley()
         {
-            if (corruptedProjectilePrefab == null || projectileSpawnPoints == null)
+            if (projectilePool == null || projectileSpawnPoints == null)
                 return;
 
             foreach (var spawn in projectileSpawnPoints)
             {
                 if (spawn == null) continue;
 
-                GameObject proj = Instantiate(corruptedProjectilePrefab, spawn.position, Quaternion.identity);
-                if (proj.TryGetComponent<CorruptedProjectile>(out var cp))
+                // Spawn with spawn point's forward direction
+                GameObject proj = projectilePool.Get(spawn.position, spawn.rotation);
+                if (proj != null && proj.TryGetComponent<CorruptedProjectile>(out var cp))
                 {
-                    // Aim toward the player (or fallback to downward)
-                    Vector2 targetDir = Vector2.down;
-                    cp.Launch(targetDir);
+                    cp.AssignPool(projectilePool);
                 }
             }
         }

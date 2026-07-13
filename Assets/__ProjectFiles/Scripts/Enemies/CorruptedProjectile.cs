@@ -6,19 +6,17 @@ namespace Orpaits.Enemies
 {
     /// <summary>
     /// A corrupted file projectile thrown by the Boss Virus during Phase 1 (The Spam).
-    /// Moves in a direction toward the player and damages on contact.
+    /// Moves continuously forward (transform.right) until it hits something or its lifetime expires.
+    /// Uses object pooling via GameObjectPool — overrides Destroy with pool return.
     ///
     /// Design reference: level-design-260712_2153.md (Boss Fight — Phase 1)
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public class CorruptedProjectile : MonoBehaviour
+    public class CorruptedProjectile : MonoBehaviour, IPoolable
     {
         [Header("Movement")]
         [SerializeField]
         private float speed = 4f;
-
-        [SerializeField]
-        private float lifetime = 5f;
 
         [Header("Damage")]
         [SerializeField]
@@ -28,30 +26,47 @@ namespace Orpaits.Enemies
         [SerializeField]
         private LayerMask destroyOnLayers = ~0;
 
-        private Vector2 direction;
         private CancellationTokenSource cts;
+        private GameObjectPool ownerPool;
 
         /// <summary>
-        /// Fire the projectile in the given direction.
+        /// Assign the pool this projectile returns to.
+        /// Called by BossVirus after Get().
         /// </summary>
-        public void Launch(Vector2 dir)
+        public void AssignPool(GameObjectPool pool)
         {
-            direction = dir.normalized;
+            ownerPool = pool;
+        }
+
+        public void OnPoolGet()
+        {
+            cts?.Dispose();
             cts = new CancellationTokenSource();
             _ = LifetimeAsync(cts.Token);
         }
 
+        public void OnPoolReturn()
+        {
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = null;
+        }
+
+        /// <summary>
+        /// Each frame: move continuously in the projectile's forward direction.
+        /// No direction parameter — just set the transform rotation on spawn.
+        /// </summary>
         private void Update()
         {
             if (enabled)
-                transform.Translate(direction * speed * Time.deltaTime);
+                transform.Translate(speed * Time.deltaTime * Vector2.right);
         }
 
         private async Awaitable LifetimeAsync(CancellationToken ct)
         {
             await Awaitable.WaitForSecondsAsync(lifetime);
             if (!ct.IsCancellationRequested)
-                Destroy(gameObject);
+                ReturnToPool();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -61,16 +76,30 @@ namespace Orpaits.Enemies
                 && !damageable.IsDead)
             {
                 damageable.TakeDamage(damageAmount);
-                Destroy(gameObject);
+                ReturnToPool();
                 return;
             }
 
-            // Destroy on hitting platforms/walls (via layer mask)
+            // Return to pool on hitting platforms/walls (via layer mask)
             if ((destroyOnLayers & (1 << other.gameObject.layer)) != 0)
+            {
+                ReturnToPool();
+            }
+        }
+
+        private void ReturnToPool()
+        {
+            if (ownerPool != null)
+            {
+                ownerPool.Return(gameObject);
+            }
+            else
             {
                 Destroy(gameObject);
             }
         }
+
+        private float lifetime = 5f;
 
         private void OnDestroy()
         {
