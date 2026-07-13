@@ -228,7 +228,7 @@ namespace Orpaits.Enemies
             // Set health between phase2 and phase3 thresholds (~50%)
             float hp = Mathf.Lerp(maxHealth * phase3Threshold, maxHealth * phase2Threshold, 0.5f);
             CurrentHealth = hp;
-            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+            NotifyHealthChanged();
             TransitionToPhase(BossPhase.Phase2);
             Debug.Log("[BossVirus] 🎮 Debug: forced Phase 2 (The Deletion)");
         }
@@ -241,7 +241,7 @@ namespace Orpaits.Enemies
             // Set health below phase3 threshold (~20%)
             float hp = maxHealth * (phase3Threshold * 0.6f);
             CurrentHealth = hp;
-            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+            NotifyHealthChanged();
             TransitionToPhase(BossPhase.Phase3);
             Debug.Log("[BossVirus] 🎮 Debug: forced Phase 3 (Glitch Wave)");
         }

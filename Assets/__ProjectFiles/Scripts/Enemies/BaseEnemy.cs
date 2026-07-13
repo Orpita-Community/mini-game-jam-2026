@@ -29,6 +29,14 @@ namespace Orpaits.Enemies
         /// <summary>Fired when health changes (current / max).</summary>
         public event Action<float, float> OnHealthChanged;
 
+        /// <summary>
+        /// Invoke OnHealthChanged from derived classes when force-setting health.
+        /// </summary>
+        protected void NotifyHealthChanged()
+        {
+            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+        }
+
         /// <summary>Fired when the enemy takes damage.</summary>
         public event Action<float> OnDamageTaken;
 
@@ -36,9 +44,11 @@ namespace Orpaits.Enemies
         public event Action OnDeath;
 
         /// <summary>
-        /// Current health value. Setting it clamps between 0 and maxHealth.
+        /// Current health value. Protected setter allows derived classes
+        /// to force-set health for phase transitions and debug tools.
+        /// External callers must use TakeDamage() / Heal().
         /// </summary>
-        public float CurrentHealth { get; private set; }
+        public float CurrentHealth { get; protected set; }
 
         public float MaxHealth => maxHealth;
 
