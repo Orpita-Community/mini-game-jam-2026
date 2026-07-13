@@ -206,6 +206,63 @@ namespace Orpaits.Enemies
 
         // ── Phase Transitions ──────────────────────────────────────────────
 
+        /// <summary>
+        /// Activate boss fight and jump to a specific phase for testing.
+        /// Right-click the BossVirus component header in the Inspector → Context Menu.
+        /// </summary>
+        [ContextMenu("Force Phase 1 (The Spam)")]
+        private void DebugForcePhase1()
+        {
+            if (IsDead) { Debug.LogWarning("[BossVirus] Boss is dead — reset first."); return; }
+            ForceStartBossFight();
+            Heal(maxHealth); // full HP
+            TransitionToPhase(BossPhase.Phase1);
+            Debug.Log("[BossVirus] 🎮 Debug: forced Phase 1 (The Spam)");
+        }
+
+        [ContextMenu("Force Phase 2 (The Deletion)")]
+        private void DebugForcePhase2()
+        {
+            if (IsDead) { Debug.LogWarning("[BossVirus] Boss is dead — reset first."); return; }
+            ForceStartBossFight();
+            // Set health between phase2 and phase3 thresholds (~50%)
+            float hp = Mathf.Lerp(maxHealth * phase3Threshold, maxHealth * phase2Threshold, 0.5f);
+            CurrentHealth = hp;
+            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+            TransitionToPhase(BossPhase.Phase2);
+            Debug.Log("[BossVirus] 🎮 Debug: forced Phase 2 (The Deletion)");
+        }
+
+        [ContextMenu("Force Phase 3 (Glitch Wave)")]
+        private void DebugForcePhase3()
+        {
+            if (IsDead) { Debug.LogWarning("[BossVirus] Boss is dead — reset first."); return; }
+            ForceStartBossFight();
+            // Set health below phase3 threshold (~20%)
+            float hp = maxHealth * (phase3Threshold * 0.6f);
+            CurrentHealth = hp;
+            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+            TransitionToPhase(BossPhase.Phase3);
+            Debug.Log("[BossVirus] 🎮 Debug: forced Phase 3 (Glitch Wave)");
+        }
+
+        [ContextMenu("Reset Boss")]
+        private void DebugReset()
+        {
+            ResetEnemy();
+            Heal(maxHealth);
+            Debug.Log("[BossVirus] 🔄 Debug: boss reset to Phase 1");
+        }
+
+        private void ForceStartBossFight()
+        {
+            if (IsBossActive) return;
+            IsBossActive = true;
+            lifecycleCts?.Dispose();
+            lifecycleCts = new CancellationTokenSource();
+            _ = BossRoutineAsync(lifecycleCts.Token);
+        }
+
         public override bool TakeDamage(float amount)
         {
             if (IsDead) return false;
