@@ -6,8 +6,9 @@ namespace Orpaits.Enemies
 {
     /// <summary>
     /// A corrupted file projectile thrown by the Boss Virus during Phase 1 (The Spam).
-    /// Moves continuously forward via transform.position (no physics).
-    /// Uses object pooling.
+    /// Moves continuously via transform.position += transform.up in an async loop.
+    /// No Update, no physics — the spawn point sets the rotation, and the projectile
+    /// moves in its own "up" direction every frame.
     ///
     /// Design reference: level-design-260712_2153.md (Boss Fight — Phase 1)
     /// </summary>
@@ -38,7 +39,7 @@ namespace Orpaits.Enemies
         {
             cts?.Dispose();
             cts = new CancellationTokenSource();
-            _ = LifetimeAsync(cts.Token);
+            _ = MoveAndLifetimeAsync(cts.Token);
         }
 
         public void OnPoolReturn()
@@ -48,15 +49,23 @@ namespace Orpaits.Enemies
             cts = null;
         }
 
-        private void Update()
+        /// <summary>
+        /// Drives movement every frame in transform.up direction.
+        /// Also returns to pool after lifetime expires.
+        /// The spawner (BossVirus) sets the projectile's rotation to match the
+        /// spawn point — so transform.up equals the spawn point's up vector.
+        /// </summary>
+        private async Awaitable MoveAndLifetimeAsync(CancellationToken ct)
         {
-            if (enabled)
-                transform.position += transform.right * (speed * Time.deltaTime);
-        }
+            float elapsed = 0f;
 
-        private async Awaitable LifetimeAsync(CancellationToken ct)
-        {
-            await Awaitable.WaitForSecondsAsync(lifetime, ct);
+            while (elapsed < lifetime && !ct.IsCancellationRequested)
+            {
+                transform.position += transform.up * (speed * Time.deltaTime);
+                elapsed += Time.deltaTime;
+                await Awaitable.NextFrameAsync(ct);
+            }
+
             if (!ct.IsCancellationRequested)
                 ReturnToPool();
         }
