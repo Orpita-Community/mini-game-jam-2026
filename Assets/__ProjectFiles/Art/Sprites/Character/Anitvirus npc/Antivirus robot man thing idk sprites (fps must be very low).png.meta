@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: 4733f1be6ec592247b1401d73f3ffda5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8500092722958948483
+    second: Antivirus robot man thing idk sprites (fps must be very low)_0
+  - first:
+      213: -7028848230432147058
+    second: Antivirus robot man thing idk sprites (fps must be very low)_1
+  - first:
+      213: -7155320989706083150
+    second: Antivirus robot man thing idk sprites (fps must be very low)_2
+  - first:
+      213: 571724663922923321
+    second: Antivirus robot man thing idk sprites (fps must be very low)_3
+  - first:
+      213: -8174137831742127718
+    second: Antivirus robot man thing idk sprites (fps must be very low)_4
+  - first:
+      213: -7331522405614946021
+    second: Antivirus robot man thing idk sprites (fps must be very low)_5
+  - first:
+      213: -2719794854239255918
+    second: Antivirus robot man thing idk sprites (fps must be very low)_6
+  - first:
+      213: 2734362965427438647
+    second: Antivirus robot man thing idk sprites (fps must be very low)_7
+  - first:
+      213: -8476894006897128034
+    second: Antivirus robot man thing idk sprites (fps must be very low)_8
+  - first:
+      213: 2396126698188151785
+    second: Antivirus robot man thing idk sprites (fps must be very low)_9
+  - first:
+      213: -2994063178302421647
+    second: Antivirus robot man thing idk sprites (fps must be very low)_10
+  - first:
+      213: 1525717558559710441
+    second: Antivirus robot man thing idk sprites (fps must be very low)_11
+  - first:
+      213: 7926627104228059224
+    second: Antivirus robot man thing idk sprites (fps must be very low)_12
+  - first:
+      213: -6033015733661367578
+    second: Antivirus robot man thing idk sprites (fps must be very low)_13
+  - first:
+      213: 1569468927806914082
+    second: Antivirus robot man thing idk sprites (fps must be very low)_14
+  - first:
+      213: -1554297856044195321
+    second: Antivirus robot man thing idk sprites (fps must be very low)_15
+  - first:
+      213: -3658392348505157955
+    second: Antivirus robot man thing idk sprites (fps must be very low)_16
+  - first:
+      213: -8527044424367752757
+    second: Antivirus robot man thing idk sprites (fps must be very low)_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 108
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d77262234ba990a80800000000000000
+      internalID: -8500092722958948483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 65
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8975fc56c3847e90800000000000000
+      internalID: -7028848230432147058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_2
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 107
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b42caa687133bc90800000000000000
+      internalID: -7155320989706083150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_3
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 65
+        width: 40
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 937947e7d8c2fe700800000000000000
+      internalID: 571724663922923321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_4
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 105
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91cde153f0af8e80800000000000000
+      internalID: -8174137831742127718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_5
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 65
+        width: 39
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19f0865733314a90800000000000000
+      internalID: -7331522405614946021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_6
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 106
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 292422b7df8514ad0800000000000000
+      internalID: -2719794854239255918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_7
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 65
+        width: 40
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 734494931a862f520800000000000000
+      internalID: 2734362965427438647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_8
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 106
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9d424030d50c5a80800000000000000
+      internalID: -8476894006897128034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 65
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9eb955a6980c04120800000000000000
+      internalID: 2396126698188151785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_10
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 107
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 175053e0763f276d0800000000000000
+      internalID: -2994063178302421647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_11
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 65
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ec178139007c2510800000000000000
+      internalID: 1525717558559710441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_12
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 1
+        width: 29
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8582f7eaa59010e60800000000000000
+      internalID: 7926627104228059224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_13
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 1
+        width: 29
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e285ce872c664ca0800000000000000
+      internalID: -6033015733661367578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_14
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 1
+        width: 29
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22eb1f7acafd7c510800000000000000
+      internalID: 1569468927806914082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_15
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 1
+        width: 29
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 702a55fb5560e6ae0800000000000000
+      internalID: -1554297856044195321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_16
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 1
+        width: 29
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbec752ca87ca3dc0800000000000000
+      internalID: -3658392348505157955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antivirus robot man thing idk sprites (fps must be very low)_17
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 1
+        width: 29
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc9b595364ad9a980800000000000000
+      internalID: -8527044424367752757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Antivirus robot man thing idk sprites (fps must be very low)_0: -8500092722958948483
+      Antivirus robot man thing idk sprites (fps must be very low)_1: -7028848230432147058
+      Antivirus robot man thing idk sprites (fps must be very low)_10: -2994063178302421647
+      Antivirus robot man thing idk sprites (fps must be very low)_11: 1525717558559710441
+      Antivirus robot man thing idk sprites (fps must be very low)_12: 7926627104228059224
+      Antivirus robot man thing idk sprites (fps must be very low)_13: -6033015733661367578
+      Antivirus robot man thing idk sprites (fps must be very low)_14: 1569468927806914082
+      Antivirus robot man thing idk sprites (fps must be very low)_15: -1554297856044195321
+      Antivirus robot man thing idk sprites (fps must be very low)_16: -3658392348505157955
+      Antivirus robot man thing idk sprites (fps must be very low)_17: -8527044424367752757
+      Antivirus robot man thing idk sprites (fps must be very low)_2: -7155320989706083150
+      Antivirus robot man thing idk sprites (fps must be very low)_3: 571724663922923321
+      Antivirus robot man thing idk sprites (fps must be very low)_4: -8174137831742127718
+      Antivirus robot man thing idk sprites (fps must be very low)_5: -7331522405614946021
+      Antivirus robot man thing idk sprites (fps must be very low)_6: -2719794854239255918
+      Antivirus robot man thing idk sprites (fps must be very low)_7: 2734362965427438647
+      Antivirus robot man thing idk sprites (fps must be very low)_8: -8476894006897128034
+      Antivirus robot man thing idk sprites (fps must be very low)_9: 2396126698188151785
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

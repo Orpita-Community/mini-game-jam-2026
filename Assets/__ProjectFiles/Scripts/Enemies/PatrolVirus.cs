@@ -75,8 +75,8 @@ namespace Orpaits.Enemies
         {
             if (IsDead) return;
 
-            Vector2 velocity = rb.velocity;
-            velocity.y = rb.velocity.y; // preserve vertical (gravity etc.)
+            Vector2 velocity = rb.linearVelocity;
+            velocity.y = rb.linearVelocity.y; // preserve vertical (gravity etc.)
 
             switch (patrolMode)
             {
@@ -89,7 +89,7 @@ namespace Orpaits.Enemies
                     break;
             }
 
-            rb.velocity = velocity;
+            rb.linearVelocity = velocity;
         }
 
         // ── Range Mode ──────────────────────────────────────────────────────
@@ -177,7 +177,7 @@ namespace Orpaits.Enemies
 
         protected override void Die()
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
             spriteRenderer.enabled = false;
             base.Die();
