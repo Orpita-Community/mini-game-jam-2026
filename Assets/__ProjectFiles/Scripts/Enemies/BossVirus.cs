@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Orpaits.Core;
 using UnityEngine;
 
 namespace Orpaits.Enemies
@@ -15,7 +16,7 @@ namespace Orpaits.Enemies
     /// Design reference: level-design-260712_2153.md (Boss Fight Details),
     /// game-loop-260712_2137.md (Combat Phase)
     /// </summary>
-    public class BossVirus : BaseEnemy
+    public class BossVirus : BaseEnemy, IBossAudioSource
     {
         public enum BossPhase
         {
@@ -65,8 +66,27 @@ namespace Orpaits.Enemies
         [SerializeField]
         private LayerMask platformLayer;
 
-        /// <summary>Fired when the boss transitions to a new phase.</summary>
-        public event Action<BossPhase> OnPhaseTransition;
+        [Header("Boss Audio")]
+        [SerializeField]
+        private AudioClip telegraphSfx;
+
+        [SerializeField]
+        private AudioClip shockwaveSfx;
+
+        [SerializeField]
+        private AudioClip platformDeletionSfx;
+
+        [SerializeField]
+        private AudioClip defeatedSfx;
+
+        [SerializeField]
+        private AudioClip defeatedMusic;
+
+        /// <summary>Fired when the boss transitions to a new phase, with the phase value for gameplay systems.</summary>
+        public event Action<BossPhase> OnPhaseChanged;
+
+        /// <summary>Fired when the boss transitions to a new phase for audio cues and other phase-agnostic listeners.</summary>
+        public event Action OnPhaseTransition;
 
         /// <summary>Fired when the boss telegraphs an attack (visual cue frame).</summary>
         public event Action OnAttackTelegraph;
@@ -79,6 +99,16 @@ namespace Orpaits.Enemies
 
         /// <summary>Fired when the boss is defeated and the arena should unlock.</summary>
         public event Action OnBossDefeated;
+
+        public AudioClip TelegraphSfx => telegraphSfx;
+
+        public AudioClip ShockwaveSfx => shockwaveSfx;
+
+        public AudioClip PlatformDeletionSfx => platformDeletionSfx;
+
+        public AudioClip DefeatedSfx => defeatedSfx;
+
+        public AudioClip DefeatedMusic => defeatedMusic;
 
         public BossPhase CurrentPhase { get; private set; } = BossPhase.Phase1;
         public bool IsBossActive { get; private set; }
@@ -298,7 +328,8 @@ namespace Orpaits.Enemies
         private void TransitionToPhase(BossPhase newPhase)
         {
             CurrentPhase = newPhase;
-            OnPhaseTransition?.Invoke(newPhase);
+            OnPhaseChanged?.Invoke(newPhase);
+            OnPhaseTransition?.Invoke();
 
             switch (newPhase)
             {

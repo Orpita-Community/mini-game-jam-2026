@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Screenshots.meta
 guid: d3e059865d787df419673682ea997ff2
+========
+guid: 82ce98e066c54af448dac1fa2ff19786
+>>>>>>>> origin/AudioControl:Assets/__ProjectFiles/Scenes.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
