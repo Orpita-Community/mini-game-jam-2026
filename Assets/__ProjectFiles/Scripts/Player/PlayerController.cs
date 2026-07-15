@@ -68,7 +68,7 @@ namespace Orpaits.Player
 
         // State & Component References
         private Rigidbody2D rb;
-        private bool isGrounded;
+        public bool isGrounded { get; private set; }
         private bool wasGrounded;
         private float movementInput;
 
@@ -124,6 +124,13 @@ namespace Orpaits.Player
             ReadInput();
             UpdateTimers();
             CheckGroundedAndCoyote();
+            
+            // 1. Evaluate if we are physically skidding BEFORE broadcasting movement
+            CheckSkidStatus(); 
+            
+            // 2. NOW broadcast the movement to the Animator
+            OnMove?.Invoke(movementInput);
+
             ExecuteJump();
             HandleJumpPhysics();
         }
@@ -142,11 +149,6 @@ namespace Orpaits.Player
             if (moveAction != null)
             {
                 movementInput = moveAction.action.ReadValue<Vector2>().x;
-                
-                if (Mathf.Abs(movementInput) > 0.01f)
-                {
-                    OnMove?.Invoke(movementInput);
-                }
             }
         }
 
@@ -155,49 +157,47 @@ namespace Orpaits.Player
             float targetSpeed = movementInput * moveSpeed;
             float currentSpeed = rb.linearVelocity.x;
 
-            // Determine if we are speeding up, slowing down, or turning around
             float accelRate;
-            
             if (Mathf.Abs(targetSpeed) > 0.01f)
             {
-                // We are holding a movement key
                 if (Mathf.Sign(movementInput) != Mathf.Sign(currentSpeed) && Mathf.Abs(currentSpeed) > 0.1f)
                 {
-                    // We are holding the OPPOSITE direction of our movement (Hard turn/brake)
                     accelRate = deceleration * 1.5f; 
                 }
                 else
                 {
-                    // Standard acceleration
                     accelRate = acceleration;
                 }
             }
             else
             {
-                // No input, slowing down to a halt
                 accelRate = deceleration;
             }
 
-            // Apply the momentum
             float newX = Mathf.MoveTowards(currentSpeed, targetSpeed, accelRate * Time.fixedDeltaTime);
             rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
-
-            // --- SKID DETECTION FOR ANIMATOR ---
-            CheckSkid(currentSpeed);
+            
+            // (Notice that the old CheckSkid call has been completely removed from here)
         }
 
-        private void CheckSkid(float currentSpeed)
+        private void CheckSkidStatus()
         {
-            // A skid happens if we are on the ground and moving fast enough, AND:
-            // 1. We let go of the keys (trying to stop) OR
-            // 2. We are pressing the opposite direction (trying to turn)
+            float currentSpeed = rb.linearVelocity.x;
             
-            bool isTryingToStop = movementInput == 0 && Mathf.Abs(currentSpeed) > skidThreshold;
-            bool isTryingToTurn = movementInput != 0 && Mathf.Sign(movementInput) != Mathf.Sign(currentSpeed) && Mathf.Abs(currentSpeed) > skidThreshold;
+            bool isInputZero = Mathf.Abs(movementInput) < 0.1f;
+            
+            // Check against a much lower threshold (0.5f instead of 3f) so the skid 
+            // animation stays active until the player comes to an almost complete stop.
+            bool isMovingFast = Mathf.Abs(currentSpeed) > 0.5f;
+            
+            // Condition 1: Letting go of the keys while running
+            bool isHardStopping = isInputZero && isMovingFast;
+            
+            // Condition 2: Pressing the opposite direction while running
+            bool isHardTurning = !isInputZero && Mathf.Sign(movementInput) != Mathf.Sign(currentSpeed) && isMovingFast;
 
-            bool shouldSkid = isGrounded && (isTryingToStop || isTryingToTurn);
+            bool shouldSkid = isGrounded && (isHardStopping || isHardTurning);
 
-            // Only fire the event when the state actually changes
             if (shouldSkid != isSkidding)
             {
                 isSkidding = shouldSkid;
