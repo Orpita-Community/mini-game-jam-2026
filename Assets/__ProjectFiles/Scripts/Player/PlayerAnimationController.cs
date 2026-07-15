@@ -102,6 +102,7 @@ namespace Orpaits.Visuals
             // If input is zero, the next OnMove call will be false.
             animator.SetBool(IS_GROUNDED, true);
         }
+        //added
 
         private void HandleSkid(bool isSkidding)
         {
