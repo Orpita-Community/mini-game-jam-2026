@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 1590683671}
   - component: {fileID: 1590683670}
   - component: {fileID: 1590683673}
+  - component: {fileID: 1590683674}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Player
@@ -515,6 +516,42 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1590683674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590683669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f572908ddc1d542a51353912df38e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Enemies.BossVirus
+  maxHealth: 1
+  contactDamage: 1
+  enemyCollider: {fileID: 1590683670}
+  spriteRenderer: {fileID: 1590683671}
+  damageSfx: {fileID: 0}
+  deathSfx: {fileID: 0}
+  phaseTransitionSfx: {fileID: 0}
+  bossName: THE VIRUS
+  corruptedProjectilePrefab: {fileID: 0}
+  projectilePool: {fileID: 0}
+  projectileSpawnPoints: []
+  projectileInterval: 2.5
+  deletionPercentage: 0.3
+  shockwaveTelegraphDuration: 1.5
+  phase2Threshold: 0.66
+  phase3Threshold: 0.33
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  telegraphSfx: {fileID: 0}
+  shockwaveSfx: {fileID: 0}
+  platformDeletionSfx: {fileID: 0}
+  defeatedSfx: {fileID: 0}
+  defeatedMusic: {fileID: 0}
 --- !u!1001 &664183370413395627
 PrefabInstance:
   m_ObjectHideFlags: 0
