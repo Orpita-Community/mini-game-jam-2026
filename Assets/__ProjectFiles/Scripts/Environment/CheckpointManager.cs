@@ -28,6 +28,9 @@ namespace Orpaits.Environment
         [SerializeField]
         [Tooltip("The CameraFollower to reset on respawn")]
         private CameraFollower cameraFollower;
+        
+        [Header("Checkpoint")]
+        [SerializeField] private Checkpoint[] allCheckpoints;
 
         private Checkpoint activeCheckpoint;
 
@@ -50,18 +53,18 @@ namespace Orpaits.Environment
             {
                 cameraFollower = FindFirstObjectByType<CameraFollower>();
             }
-        }
 
-        private void Start()
-        {
-            // Subscribe to all checkpoints in the scene
-            var allCheckpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
+            if (allCheckpoints == null)
+            {
+                allCheckpoints = FindObjectsOfType<Checkpoint>();
+            }
             foreach (var cp in allCheckpoints)
             {
                 cp.OnActivated += OnCheckpointActivated;
             }
         }
 
+      
         private void OnCheckpointActivated(Checkpoint checkpoint)
         {
             activeCheckpoint = checkpoint;
