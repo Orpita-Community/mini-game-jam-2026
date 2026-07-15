@@ -50,6 +50,7 @@ namespace Orpaits.Visuals
             playerController.OnLand += HandleLand;
             playerController.OnSkidChanged += HandleSkid;
             playerController.OnDeath += HandleDeath;
+            playerController.OnRespawn += HandleRespawn;
         }
 
         private void OnDisable()
@@ -62,6 +63,7 @@ namespace Orpaits.Visuals
             playerController.OnLand -= HandleLand;
             playerController.OnSkidChanged -= HandleSkid;
             playerController.OnDeath -= HandleDeath;
+            playerController.OnRespawn -= HandleRespawn;
         }
 
         private void Update()
@@ -113,10 +115,22 @@ namespace Orpaits.Visuals
         private void HandleDeath()
         {
             animator.SetTrigger(DIE_TRIGGER);
-            
+
             // Ensure no other states override death
             animator.SetBool(IS_RUNNING, false);
-            animator.SetBool(IS_GROUNDED, true); 
+            animator.SetBool(IS_GROUNDED, true);
+        }
+
+        private void HandleRespawn()
+        {
+            // Clear the death state so the animator returns to Idle/Locomotion.
+            // NOTE: the Animator Controller needs a transition out of the Death
+            // state (e.g. back to Idle) gated on this reset for it to take effect.
+            animator.ResetTrigger(DIE_TRIGGER);
+            animator.SetBool(IS_RUNNING, false);
+            animator.SetBool(IS_SKIDDING, false);
+            animator.SetBool(IS_GROUNDED, true);
+            isCurrentlySkidding = false;
         }
     }
 }

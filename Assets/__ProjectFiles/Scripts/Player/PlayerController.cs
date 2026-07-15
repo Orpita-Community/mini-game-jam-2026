@@ -63,6 +63,7 @@ namespace Orpaits.Player
         public event Action<float, float> OnHealthChanged;
         public event Action<float> OnDamageTaken;
         public event Action OnDeath;
+        public event Action OnRespawn;
         public event Action<bool> OnSkidChanged;
         private bool isSkidding;
 
@@ -313,6 +314,44 @@ namespace Orpaits.Player
             rb.simulated = false; 
             
             OnDeath?.Invoke();
+        }
+
+        /// <summary>
+        /// Resets the player to a specific position for checkpoint respawn.
+        /// Revives the player (if dead), restores full health, and clears all
+        /// movement/jump/skid state so respawn starts clean. Collected icons are
+        /// preserved elsewhere (IconCollectionManager) and untouched here.
+        ///
+        /// Called by <see cref="Orpaits.Environment.CheckpointManager"/>.
+        /// </summary>
+        public void ResetToPosition(Vector2 position)
+        {
+            // Revive: Die() sets IsDead and disables physics simulation.
+            IsDead = false;
+            rb.simulated = true;
+
+            // Snap to respawn point and kill all momentum.
+            transform.position = position;
+            rb.linearVelocity = Vector2.zero;
+            movementInput = 0f;
+
+            // Clear jump forgiveness so we can't insta-jump on spawn.
+            coyoteTimeCounter = 0f;
+            jumpBufferCounter = 0f;
+            wasGrounded = false;
+            isGrounded = false;
+
+            // Drop skid state and notify listeners so the animator resets.
+            if (isSkidding)
+            {
+                isSkidding = false;
+                OnSkidChanged?.Invoke(false);
+            }
+
+            // Restore health and broadcast so HUD + animation recover.
+            CurrentHealth = maxHealth;
+            OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
+            OnRespawn?.Invoke();
         }
 
         private void OnDrawGizmosSelected()

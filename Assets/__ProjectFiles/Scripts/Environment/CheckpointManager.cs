@@ -1,5 +1,5 @@
 using UnityEngine;
-using Orpaits.Character;
+using Orpaits.Player;
 using Orpaits.Core;
 
 namespace Orpaits.Environment

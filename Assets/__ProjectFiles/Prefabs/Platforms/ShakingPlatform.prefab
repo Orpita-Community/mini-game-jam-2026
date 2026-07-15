@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 801922629375378970}
   - component: {fileID: 490783360497053908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4041018824986893758}
   - component: {fileID: 7967098343799611213}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 2907601803297048475}
   - component: {fileID: 4345806688900586945}
   - component: {fileID: 770045910224739719}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShakingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

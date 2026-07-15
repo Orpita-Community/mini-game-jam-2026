@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4477520749513539862}
   - component: {fileID: 3107193414964206371}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 1917793279888653210}
   - component: {fileID: 8701435681631298393}
   - component: {fileID: 4410513044182628460}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CorruptedPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385548577835894943}
   - component: {fileID: 4558703622730005786}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
