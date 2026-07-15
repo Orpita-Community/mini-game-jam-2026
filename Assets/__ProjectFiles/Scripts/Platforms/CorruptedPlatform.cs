@@ -129,6 +129,10 @@ namespace Orpaits.Platforms
 
             // Hide platform
             spriteRenderer.enabled = false;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
 
             // Phase 3: Respawning
             CurrentState = PlatformState.Respawning;
@@ -138,6 +142,8 @@ namespace Orpaits.Platforms
             // Reset everything
             transform.position = originalPosition;
             spriteRenderer.enabled = true;
+            foreach (Transform child in transform)
+                child.gameObject.SetActive(true);
             platformCollider.enabled = true;
             hasBeenTriggered = false;
             IsPlayerOnPlatform = false;

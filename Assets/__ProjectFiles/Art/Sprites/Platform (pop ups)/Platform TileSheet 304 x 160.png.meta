@@ -1,0 +1,911 @@
+fileFormatVersion: 2
+guid: 87a9114436ea338469ec252d57e7e960
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6052540267088584963
+    second: Platform TileSheet 304 x 160_0
+  - first:
+      213: -5576285043093594333
+    second: Platform TileSheet 304 x 160_1
+  - first:
+      213: 2420769017322477746
+    second: Platform TileSheet 304 x 160_2
+  - first:
+      213: 2769768913718508450
+    second: Platform TileSheet 304 x 160_3
+  - first:
+      213: -3181668497727325645
+    second: Platform TileSheet 304 x 160_4
+  - first:
+      213: -4334880426685087434
+    second: Platform TileSheet 304 x 160_5
+  - first:
+      213: -1791682770989465353
+    second: Platform TileSheet 304 x 160_6
+  - first:
+      213: -2732464242117033257
+    second: Platform TileSheet 304 x 160_7
+  - first:
+      213: -3714615032737636014
+    second: Platform TileSheet 304 x 160_8
+  - first:
+      213: -7314488289986228567
+    second: Platform TileSheet 304 x 160_9
+  - first:
+      213: -1297473469561187413
+    second: Platform TileSheet 304 x 160_10
+  - first:
+      213: 8604097110606301501
+    second: Platform TileSheet 304 x 160_11
+  - first:
+      213: -3967962706009596664
+    second: Platform TileSheet 304 x 160_12
+  - first:
+      213: 6316498568628843756
+    second: Platform TileSheet 304 x 160_13
+  - first:
+      213: -5189867534288277481
+    second: Platform TileSheet 304 x 160_14
+  - first:
+      213: 1639072486258515625
+    second: Platform TileSheet 304 x 160_15
+  - first:
+      213: -5364869103359717191
+    second: Platform TileSheet 304 x 160_16
+  - first:
+      213: -8452466179329950853
+    second: Platform TileSheet 304 x 160_17
+  - first:
+      213: -8989576686105350929
+    second: Platform TileSheet 304 x 160_18
+  - first:
+      213: -7236341973867217984
+    second: Platform TileSheet 304 x 160_19
+  - first:
+      213: -974623258397728285
+    second: Platform TileSheet 304 x 160_20
+  - first:
+      213: 5129371620580767250
+    second: Platform TileSheet 304 x 160_21
+  - first:
+      213: 7042674439056976711
+    second: Platform TileSheet 304 x 160_22
+  - first:
+      213: 1210350539656615851
+    second: Platform TileSheet 304 x 160_23
+  - first:
+      213: -525501845649492271
+    second: Platform TileSheet 304 x 160_24
+  - first:
+      213: 5227066105754283154
+    second: Platform TileSheet 304 x 160_25
+  - first:
+      213: 5522349708446428610
+    second: Platform TileSheet 304 x 160_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 1
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 132
+        width: 65
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfedf6fd1be010ca0800000000000000
+      internalID: -6052540267088584963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_1
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 133
+        width: 66
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 7, z: 8, w: 11}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32f15183c4e0d92b0800000000000000
+      internalID: -5576285043093594333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_2
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 111
+        width: 66
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b817c0789c489120800000000000000
+      internalID: 2420769017322477746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_3
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 111
+        width: 65
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ab7c14f622307620800000000000000
+      internalID: 2769768913718508450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 101
+        width: 65
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33a79e7cb5178d3d0800000000000000
+      internalID: -3181668497727325645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_5
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 101
+        width: 66
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 18, y: 5, z: 13, w: 10}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63144a7183967d3c0800000000000000
+      internalID: -4334880426685087434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_6
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 84
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f04cf4330aa227e0800000000000000
+      internalID: -1791682770989465353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_7
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 83
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2482fbf36541ad0800000000000000
+      internalID: -2732464242117033257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_8
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 83
+        width: 19
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 251e8500f49037cc0800000000000000
+      internalID: -3714615032737636014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_9
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 83
+        width: 25
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aecd9177a7bd7a90800000000000000
+      internalID: -7314488289986228567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_10
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 47
+        width: 66
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 18, y: 9, z: 19, w: 17}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba3df45f0c27efde0800000000000000
+      internalID: -1297473469561187413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_11
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 47
+        width: 65
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3947a25cb4e76770800000000000000
+      internalID: 8604097110606301501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_12
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 67
+        width: 21
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80ddc4a21f6fee8c0800000000000000
+      internalID: -3967962706009596664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_13
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 67
+        width: 26
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce4b26f5bf5b8a750800000000000000
+      internalID: 6316498568628843756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 52
+        width: 33
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7103a6389f2e9f7b0800000000000000
+      internalID: -5189867534288277481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_15
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 51
+        width: 23
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ae1e88fdb72fb610800000000000000
+      internalID: 1639072486258515625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_16
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 51
+        width: 31
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b096cb89f72c85b0800000000000000
+      internalID: -5364869103359717191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_17
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 33
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7bf8010bcec2ba80800000000000000
+      internalID: -8452466179329950853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_18
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 35
+        width: 39
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fecae8ff1ab9e3380800000000000000
+      internalID: -8989576686105350929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_19
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 35
+        width: 19
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cb35668059539b90800000000000000
+      internalID: -7236341973867217984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_20
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 35
+        width: 25
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e1ae5d6f417972f0800000000000000
+      internalID: -974623258397728285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_21
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 2
+        width: 47
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 216bfa5ff403f2740800000000000000
+      internalID: 5129371620580767250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_22
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 20
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74be6b0b61b9cb160800000000000000
+      internalID: 7042674439056976711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_23
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 18
+        width: 45
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba75fe137670cc010800000000000000
+      internalID: 1210350539656615851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_24
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 19
+        width: 26
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d6ff390bda05b8f0800000000000000
+      internalID: -525501845649492271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_25
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 2
+        width: 25
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29ce7f2dde44a8840800000000000000
+      internalID: 5227066105754283154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_26
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 2
+        width: 33
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cd6e691dc353ac40800000000000000
+      internalID: 5522349708446428610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_27
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 69
+        width: 5
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff45ac216784eac4ebf7d35afd630d29
+      internalID: -1772713172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_28
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 67
+        width: 31
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2b1aecd6addf0246959942a59d97aa1
+      internalID: -1311069215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_29
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 66
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddbfab4a49b557c4cb44e34a3b287596
+      internalID: -2009224510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Platform TileSheet 304 x 160_30
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 52
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03549d295b4320e4cb15250dae852343
+      internalID: 926783347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 4c29368de8c63f949921c6dca74a8253
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Platform TileSheet 304 x 160_0: -6052540267088584963
+      Platform TileSheet 304 x 160_1: -5576285043093594333
+      Platform TileSheet 304 x 160_10: -1297473469561187413
+      Platform TileSheet 304 x 160_11: 8604097110606301501
+      Platform TileSheet 304 x 160_12: -3967962706009596664
+      Platform TileSheet 304 x 160_13: 6316498568628843756
+      Platform TileSheet 304 x 160_14: -5189867534288277481
+      Platform TileSheet 304 x 160_15: 1639072486258515625
+      Platform TileSheet 304 x 160_16: -5364869103359717191
+      Platform TileSheet 304 x 160_17: -8452466179329950853
+      Platform TileSheet 304 x 160_18: -8989576686105350929
+      Platform TileSheet 304 x 160_19: -7236341973867217984
+      Platform TileSheet 304 x 160_2: 2420769017322477746
+      Platform TileSheet 304 x 160_20: -974623258397728285
+      Platform TileSheet 304 x 160_21: 5129371620580767250
+      Platform TileSheet 304 x 160_22: 7042674439056976711
+      Platform TileSheet 304 x 160_23: 1210350539656615851
+      Platform TileSheet 304 x 160_24: -525501845649492271
+      Platform TileSheet 304 x 160_25: 5227066105754283154
+      Platform TileSheet 304 x 160_26: 5522349708446428610
+      Platform TileSheet 304 x 160_27: -1772713172
+      Platform TileSheet 304 x 160_28: -1311069215
+      Platform TileSheet 304 x 160_29: -2009224510
+      Platform TileSheet 304 x 160_3: 2769768913718508450
+      Platform TileSheet 304 x 160_30: 926783347
+      Platform TileSheet 304 x 160_4: -3181668497727325645
+      Platform TileSheet 304 x 160_5: -4334880426685087434
+      Platform TileSheet 304 x 160_6: -1791682770989465353
+      Platform TileSheet 304 x 160_7: -2732464242117033257
+      Platform TileSheet 304 x 160_8: -3714615032737636014
+      Platform TileSheet 304 x 160_9: -7314488289986228567
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

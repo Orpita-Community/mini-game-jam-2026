@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5079107221844285275}
   - component: {fileID: 388037855232608278}
   - component: {fileID: 4196662543411154634}
-  - component: {fileID: 6755558510205162234}
+  - component: {fileID: -2360644341211204352}
   m_Layer: 0
   m_Name: PrecisionPlatform
   m_TagString: Untagged
@@ -157,7 +157,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5079107221844285275}
   sizeCategory: 0
   difficultyRating: 2
---- !u!251 &6755558510205162234
+--- !u!251 &-2360644341211204352
 PlatformEffector2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
