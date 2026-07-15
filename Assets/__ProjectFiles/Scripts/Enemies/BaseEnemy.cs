@@ -10,7 +10,7 @@ namespace Orpaits.Enemies
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class BaseEnemy : MonoBehaviour, IDamageable
+    public abstract class BaseEnemy : MonoBehaviour, IDamageable, IEnemyAudioSource
     {
         [Header("Health")]
         [SerializeField]
@@ -25,6 +25,16 @@ namespace Orpaits.Enemies
 
         [SerializeField]
         protected SpriteRenderer spriteRenderer;
+
+        [Header("Audio")]
+        [SerializeField]
+        protected AudioClip damageSfx;
+
+        [SerializeField]
+        protected AudioClip deathSfx;
+
+        [SerializeField]
+        protected AudioClip phaseTransitionSfx;
 
         /// <summary>Fired when health changes (current / max).</summary>
         public event Action<float, float> OnHealthChanged;
@@ -42,6 +52,12 @@ namespace Orpaits.Enemies
 
         /// <summary>Fired when the enemy dies.</summary>
         public event Action OnDeath;
+
+        public AudioClip DamageSfx => damageSfx;
+
+        public AudioClip DeathSfx => deathSfx;
+
+        public AudioClip PhaseTransitionSfx => phaseTransitionSfx;
 
         /// <summary>
         /// Current health value. Protected setter allows derived classes
@@ -68,6 +84,16 @@ namespace Orpaits.Enemies
                 spriteRenderer = GetComponent<SpriteRenderer>();
 
             CurrentHealth = maxHealth;
+        }
+
+        protected virtual void OnEnable()
+        {
+            AudioManager.Instance?.RegisterEnemy(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            AudioManager.Instance?.UnregisterEnemy(this);
         }
 
         /// <summary>
