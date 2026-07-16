@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4350166353208629678}
   m_Layer: 0
   m_Name: PatrolVirus
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,7 +168,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!114 &288738434933447094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +185,9 @@ MonoBehaviour:
   contactDamage: 1
   enemyCollider: {fileID: 7294384955353901221}
   spriteRenderer: {fileID: 2550394058228114669}
+  damageSfx: {fileID: 0}
+  deathSfx: {fileID: 0}
+  phaseTransitionSfx: {fileID: 0}
   patrolMode: 0
   moveSpeed: 2
   leftBound: -4
