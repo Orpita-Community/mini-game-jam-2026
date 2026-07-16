@@ -13,6 +13,12 @@ namespace Orpaits.Visuals
     {
         [Header("References")]
         [SerializeField] private PlayerController playerController;
+
+        [Header("Respawn")]
+        [SerializeField]
+        [Tooltip("State forced on respawn. Player_Dead has no outgoing transitions, " +
+                 "so the animator must be snapped out of it explicitly.")]
+        private string idleStateName = "Player_Idle";
         
         // --- ANIMATOR PARAMETERS ---
         // We will define these exact parameters in the Editor later
@@ -124,14 +130,17 @@ namespace Orpaits.Visuals
 
         private void HandleRespawn()
         {
-            // Clear the death state so the animator returns to Idle/Locomotion.
-            // NOTE: the Animator Controller needs a transition out of the Death
-            // state (e.g. back to Idle) gated on this reset for it to take effect.
             animator.ResetTrigger(DIE_TRIGGER);
+            animator.ResetTrigger(JUMP_TRIGGER);
             animator.SetBool(IS_RUNNING, false);
             animator.SetBool(IS_SKIDDING, false);
             animator.SetBool(IS_GROUNDED, true);
+            animator.SetFloat(Y_VELOCITY, 0f);
             isCurrentlySkidding = false;
+
+            // Player_Dead is a dead-end state: clearing dieTrigger cannot leave it,
+            // so snap straight back to Idle.
+            animator.Play(idleStateName, 0, 0f);
         }
     }
 }

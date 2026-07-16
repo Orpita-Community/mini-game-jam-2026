@@ -127,6 +127,9 @@ namespace Orpaits.Collectibles
             var manager = IconCollectionManager.Instance;
             if (manager != null)
                 manager.AddIcon(data);
+            else
+                Debug.LogError($"[IconPickup] '{name}' collected but no IconCollectionManager exists — " +
+                               "the icon is lost and the HUD will not update.", this);
 
             if (pickupVFX != null)
             {

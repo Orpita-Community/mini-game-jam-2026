@@ -7,12 +7,17 @@ namespace Orpaits.Enemies
     /// <summary>
     /// A corrupted file projectile thrown by the Boss Virus during Phase 1 (The Spam).
     /// Moves continuously via transform.position += transform.up in an async loop.
-    /// No Update, no physics — the spawn point sets the rotation, and the projectile
-    /// moves in its own "up" direction every frame.
+    /// No Update — the spawn point sets the rotation, and the projectile moves in
+    /// its own "up" direction every frame.
+    ///
+    /// Requires a kinematic Rigidbody2D: the collider is moved by transform, and
+    /// without a body it would be a static collider, which only reports triggers
+    /// while the other body happens to be awake — a sleeping player would be missed.
     ///
     /// Design reference: level-design-260712_2153.md (Boss Fight — Phase 1)
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class CorruptedProjectile : MonoBehaviour, IPoolable
     {
         [Header("Movement")]

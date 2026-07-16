@@ -168,7 +168,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 2
+  m_Constraints: 6
 --- !u!114 &288738434933447094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Enemies.PatrolVirus
   maxHealth: 1
   contactDamage: 1
+  contactDamageInterval: 1
   enemyCollider: {fileID: 7294384955353901221}
   spriteRenderer: {fileID: 2550394058228114669}
   damageSfx: {fileID: 0}

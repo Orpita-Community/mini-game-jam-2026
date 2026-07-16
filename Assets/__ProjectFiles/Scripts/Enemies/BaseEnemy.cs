@@ -19,6 +19,11 @@ namespace Orpaits.Enemies
         [SerializeField]
         protected float contactDamage = 1f;
 
+        [SerializeField]
+        [Tooltip("Seconds before contact can damage the same victim again. Collision callbacks " +
+                 "fire every physics step, so 0 would drain the player's health almost instantly.")]
+        protected float contactDamageInterval = 1f;
+
         [Header("Components")]
         [SerializeField]
         protected Collider2D enemyCollider;
@@ -160,6 +165,37 @@ namespace Orpaits.Enemies
         public virtual void OnProjectileHit(float damage)
         {
             TakeDamage(damage);
+        }
+
+        // ── Contact damage ──────────────────────────────────────────────────
+
+        private float lastContactDamageTime = float.NegativeInfinity;
+
+        protected virtual void OnCollisionStay2D(Collision2D collision)
+        {
+            TryContactDamage(collision.gameObject);
+        }
+
+        protected virtual void OnTriggerStay2D(Collider2D other)
+        {
+            TryContactDamage(other.gameObject);
+        }
+
+        /// <summary>
+        /// Damages an <see cref="IDamageable"/> we are touching, rate-limited by
+        /// <see cref="contactDamageInterval"/>. Other enemies are ignored so bodies
+        /// bumping in a crowd don't kill each other.
+        /// </summary>
+        protected void TryContactDamage(GameObject target)
+        {
+            if (IsDead || contactDamage <= 0f) return;
+            if (Time.time - lastContactDamageTime < contactDamageInterval) return;
+
+            if (!target.TryGetComponent<IDamageable>(out var damageable)) return;
+            if (damageable.IsDead || damageable is BaseEnemy) return;
+
+            if (damageable.TakeDamage(contactDamage))
+                lastContactDamageTime = Time.time;
         }
     }
 }

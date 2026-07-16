@@ -503,6 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Enemies.BossVirus
   maxHealth: 25
   contactDamage: 1
+  contactDamageInterval: 1
   enemyCollider: {fileID: 4441900075366377119}
   spriteRenderer: {fileID: 2071566094403432447}
   damageSfx: {fileID: 0}

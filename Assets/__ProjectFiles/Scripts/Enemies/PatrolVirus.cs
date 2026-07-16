@@ -158,16 +158,7 @@ namespace Orpaits.Enemies
 
         // ── Combat ──────────────────────────────────────────────────────────
 
-        protected virtual void OnCollisionStay2D(Collision2D collision)
-        {
-            if (IsDead) return;
-
-            if (collision.gameObject.TryGetComponent<Core.IDamageable>(out var damageable)
-                && !damageable.IsDead)
-            {
-                damageable.TakeDamage(contactDamage);
-            }
-        }
+        // Contact damage is inherited from BaseEnemy.
 
         public override void OnProjectileHit(float damage)
         {
