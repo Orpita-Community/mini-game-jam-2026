@@ -22,6 +22,8 @@ namespace Orpaits.Core
 
         [Header("Scene Names (must be in Build Settings)")]
         [SerializeField] private string mainMenuScene = "MainMenu";
+        [SerializeField] private string cutscene = "Cutscene";
+        [SerializeField] private string tutorialScene = "Tutorial";
         [SerializeField] private string gameplayScene = "SampleScene";
         [SerializeField] private string bossArenaScene = "BossArena";
 
@@ -34,6 +36,8 @@ namespace Orpaits.Core
         public string MainMenuScene => mainMenuScene;
         public string GameplayScene => gameplayScene;
         public string BossArenaScene => bossArenaScene;
+        public string Cutscene => cutscene;
+        public string TutorialScene => tutorialScene;
 
         private void Awake()
         {
@@ -99,7 +103,7 @@ namespace Orpaits.Core
 
         // --- Scene transitions ---
 
-        public void StartGame() => LoadScene(gameplayScene);
+        public void StartGame() => LoadScene(cutscene);
         public void LoadMainMenu() => LoadScene(mainMenuScene);
         public void LoadBossArena() => LoadScene(bossArenaScene);
         public void ReloadCurrentScene() => LoadScene(SceneManager.GetActiveScene().name);

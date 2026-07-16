@@ -38,9 +38,23 @@ namespace Orpaits.Environment
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag(targetTag)) return;
+            // 1. Handle Player Death
+            if (other.CompareTag(targetTag))
+            {
+                KillPlayer();
+                return;
+            }
 
-            KillPlayer();
+            // 2. Handle Enemy Death
+            if (other.CompareTag("Enemy"))
+            {
+                if (other.TryGetComponent<Orpaits.Core.IDamageable>(out var enemy))
+                {
+                    // Instantly kill the enemy
+                    enemy.TakeDamage(999f); 
+                }
+                return;
+            }
         }
 
         /// <summary>
@@ -48,7 +62,7 @@ namespace Orpaits.Environment
         /// </summary>
         public void KillPlayer()
         {
-            Debug.Log("[KillZone] Player fell into kill zone!");
+            Debug.Log("this.gameobject [KillZone] Player fell into kill zone!");
 
             OnPlayerKilled?.Invoke();
 

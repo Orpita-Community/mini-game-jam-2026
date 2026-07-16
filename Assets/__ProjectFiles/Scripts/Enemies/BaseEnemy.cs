@@ -19,6 +19,9 @@ namespace Orpaits.Enemies
         [SerializeField]
         protected float contactDamage = 1f;
 
+        private float lastDamageTime = -999f;
+        private const float DAMAGE_COOLDOWN = 1.0f;
+
         [Header("Components")]
         [SerializeField]
         protected Collider2D enemyCollider;
@@ -119,6 +122,7 @@ namespace Orpaits.Enemies
             if (IsDead || amount <= 0f)
                 return false;
 
+            
             CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
             OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
             OnDamageTaken?.Invoke(amount);

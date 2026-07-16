@@ -50,6 +50,11 @@ namespace Orpaits.Player
         [SerializeField] private float groundCheckRadius = 0.2f;
         [SerializeField] private LayerMask groundLayer;
 
+        [Header("Combat (Zone 3)")]
+        [SerializeField] private GameObjectPool dataDiscPool;
+        [SerializeField] private Transform throwSpawnPoint;
+        public int CurrentAmmo { get; private set; }
+
         [Header("Input Actions")]
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference jumpAction;
@@ -82,6 +87,16 @@ namespace Orpaits.Player
         {
             rb = GetComponent<Rigidbody2D>();
             CurrentHealth = maxHealth;
+            // Read the ammo the NPC gave us (defaults to 0 if no trade happened)
+            CurrentAmmo = PlayerPrefs.GetInt("Player_DataDiscs", 0);
+        }
+
+        [ContextMenu("🎮 Debug: Give 99 Discs")]
+        private void DebugGiveAmmo()
+        {
+            // Give ourselves massive ammo for testing without messing with PlayerPrefs
+            CurrentAmmo = 99;
+            Debug.Log("[PlayerController] 🎮 Debug: Granted 99 Data Discs!");
         }
 
         private void OnEnable()
@@ -273,9 +288,22 @@ namespace Orpaits.Player
 
         private void HandleThrow(InputAction.CallbackContext context)
         {
-            if (!IsDead)
+            // Only throw if alive, we have ammo, and the pool is assigned!
+            if (!IsDead && CurrentAmmo > 0 && dataDiscPool != null)
             {
+                CurrentAmmo--; // Consume one CD
+                
+                // Spawn it
+                GameObject disc = dataDiscPool.Get(throwSpawnPoint.position, Quaternion.identity);
+                
+                if (disc != null && disc.TryGetComponent<DataDiscProjectile>(out var p))
+                {
+                    p.AssignPool(dataDiscPool);
+                }
+
                 OnThrow?.Invoke();
+                
+                Debug.Log($"Threw CD! Ammo remaining: {CurrentAmmo}");
             }
         }
 
@@ -293,6 +321,17 @@ namespace Orpaits.Player
             if (CurrentHealth <= 0f) Die();
 
             return true;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            // Check if we hit an enemy
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                // Bounce the player upward
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+            }
         }
 
         public bool Heal(float amount)
