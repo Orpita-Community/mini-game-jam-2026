@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8953847353792053969}
   - {fileID: 2022976496747190654}
   - {fileID: 1551756105739588946}
   - {fileID: 5447113555138992271}
@@ -64,11 +65,10 @@ Transform:
   m_GameObject: {fileID: 220049984167035674}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7667452, w: 0.6419516}
-  m_LocalPosition: {x: -2.4709105, y: -0.44124842, z: 0}
+  m_LocalPosition: {x: -5.62, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8953847353792053969}
+  m_Children: []
   m_Father: {fileID: 5185081890946439331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1925813131972032589
@@ -96,7 +96,7 @@ Transform:
   m_GameObject: {fileID: 1925813131972032589}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.8939588, w: 0.44814914}
-  m_LocalPosition: {x: 2.011147, y: -1.5017948, z: 0}
+  m_LocalPosition: {x: 4.63, y: -3.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 3006847013385994878}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.5983246, w: 0.8012538}
-  m_LocalPosition: {x: 2.4066374, y: 0.7128784, z: 0}
+  m_LocalPosition: {x: 5.15, y: 1.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 4054966007711446424}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.8939588, w: 0.44814914}
-  m_LocalPosition: {x: -2.011147, y: -1.5017948, z: 0}
+  m_LocalPosition: {x: -4.51, y: -3.37, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -189,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 4553374859352412843}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -2.5100002, z: 0}
+  m_LocalPosition: {x: 0, y: -4.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -220,7 +220,7 @@ Transform:
   m_GameObject: {fileID: 6170810788248764386}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.9731287, w: 0.230262}
-  m_LocalPosition: {x: 1.1248546, y: -2.2438366, z: 0}
+  m_LocalPosition: {x: 2.27, y: -4.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -250,12 +250,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7637160131380931395}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.2302621, w: 0.9731287}
-  m_LocalPosition: {x: 1.1248544, y: -0.26616335, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.5983246, w: 0.8012539}
+  m_LocalPosition: {x: -5.17, y: 1.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2022976496747190654}
+  m_Father: {fileID: 5185081890946439331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7924493890253315431
 GameObject:
@@ -282,7 +282,7 @@ Transform:
   m_GameObject: {fileID: 7924493890253315431}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.9731287, w: 0.230262}
-  m_LocalPosition: {x: -1.1248546, y: -2.2438366, z: 0}
+  m_LocalPosition: {x: -2.37, y: -4.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -313,7 +313,7 @@ Transform:
   m_GameObject: {fileID: 8123343512706944104}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7667452, w: 0.6419516}
-  m_LocalPosition: {x: 2.4709105, y: -0.44124842, z: 0}
+  m_LocalPosition: {x: 6.05, y: -1.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -454,7 +454,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.92, y: 2.4}
+    oldSize: {x: 9.125, y: 7.5}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -505,6 +505,9 @@ MonoBehaviour:
   contactDamage: 1
   enemyCollider: {fileID: 4441900075366377119}
   spriteRenderer: {fileID: 2071566094403432447}
+  damageSfx: {fileID: 0}
+  deathSfx: {fileID: 0}
+  phaseTransitionSfx: {fileID: 0}
   bossName: THE VIRUS
   corruptedProjectilePrefab: {fileID: 706194230342129667, guid: 5081d47326dc8af4eb75392e68fa86f0, type: 3}
   projectilePool: {fileID: 0}
@@ -526,6 +529,11 @@ MonoBehaviour:
   platformLayer:
     serializedVersion: 2
     m_Bits: 64
+  telegraphSfx: {fileID: 0}
+  shockwaveSfx: {fileID: 0}
+  platformDeletionSfx: {fileID: 0}
+  defeatedSfx: {fileID: 0}
+  defeatedMusic: {fileID: 0}
 --- !u!95 &6422909786897601552
 Animator:
   serializedVersion: 7
