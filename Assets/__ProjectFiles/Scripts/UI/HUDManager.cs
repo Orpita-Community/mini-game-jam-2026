@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Orpaits.Collectibles;
+using Orpaits.Player;
 
 namespace Orpaits.UI
 {
@@ -11,16 +12,25 @@ namespace Orpaits.UI
     /// feedback animation (issue #22).
     ///
     /// All four data sources are decoupled — systems push values in via the
-    /// Set* methods. As of this implementation only the icon counter is
-    /// auto-wired (subscribes to <see cref="IconCollectionManager"/>); the
-    /// other three remain at sensible placeholders until issues #2, #17, #18
-    /// land their respective systems.
+    /// Set* methods. The icon counter and health bar are auto-wired here
+    /// (<see cref="IconCollectionManager.OnCountChanged"/> and
+    /// <see cref="PlayerController.OnHealthChanged"/>). Ammo/discs and the
+    /// shield stay at placeholders until issues #17 and #18 land their systems.
     ///
     /// Design reference: issue #13 (HUD), level-design-260712_2153.md (HUD layout),
     /// audio-design-260712_2153.md (Windows XP aesthetic).
     /// </summary>
     public class HUDManager : MonoBehaviour
     {
+        [Header("Sources")]
+        [SerializeField]
+        [Tooltip("Player whose health drives the bar. Found by tag at runtime if left empty.")]
+        private PlayerController player;
+
+        [SerializeField]
+        [Tooltip("Tag used to find the player when the reference above is empty.")]
+        private string playerTag = "Player";
+
         [Header("Health (top-left)")]
         [SerializeField]
         [Tooltip("Fill image whose width scales 0..1 with health fraction.")]
@@ -73,6 +83,8 @@ namespace Orpaits.UI
         /// <summary>Singleton accessor for systems that push updates.</summary>
         public static HUDManager Instance { get; private set; }
 
+        private IconCollectionManager icons;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -86,17 +98,20 @@ namespace Orpaits.UI
 
         private void OnDestroy()
         {
+            if (icons != null) icons.OnCountChanged -= HandleIconCountChanged;
+            if (player != null) player.OnHealthChanged -= SetHealth;
+
             if (Instance == this) Instance = null;
         }
 
         private void Start()
         {
-            // Wire to the icon collection if present (issue #16 already provides this).
-            var icons = IconCollectionManager.Instance;
+            // Icons (issue #16).
+            icons = IconCollectionManager.Instance;
             if (icons != null)
             {
                 SetIconCount(icons.Count, icons.TotalInLevel);
-                icons.OnCountChanged += (count) => SetIconCount(count, icons.TotalInLevel);
+                icons.OnCountChanged += HandleIconCountChanged;
             }
             else
             {
@@ -104,10 +119,32 @@ namespace Orpaits.UI
                 SetIconCount(0, 0);
             }
 
-            // Initialize other slots to placeholder values until their systems exist.
-            SetHealth(1f, 1f);
+            // Health — pushed by the player on damage, heal, and respawn.
+            if (player == null)
+            {
+                var playerGO = GameObject.FindGameObjectWithTag(playerTag);
+                if (playerGO != null) player = playerGO.GetComponent<PlayerController>();
+            }
+
+            if (player != null)
+            {
+                SetHealth(player.CurrentHealth, player.MaxHealth);
+                player.OnHealthChanged += SetHealth;
+            }
+            else
+            {
+                Debug.LogWarning($"[HUDManager] No PlayerController tagged '{playerTag}'; health bar will be a placeholder.");
+                SetHealth(1f, 1f);
+            }
+
+            // No system pushes these yet (#17 discs, #18 shield).
             SetAmmo(0);
             SetShield(false, 0f);
+        }
+
+        private void HandleIconCountChanged(int count)
+        {
+            SetIconCount(count, icons != null ? icons.TotalInLevel : 0);
         }
 
         // ---------------------------- API ----------------------------

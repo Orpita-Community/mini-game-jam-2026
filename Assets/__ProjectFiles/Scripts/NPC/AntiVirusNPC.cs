@@ -3,8 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Orpaits.Collectibles;
+using Orpaits.Core;
+using Orpaits.Player;
 using Orpaits.UI;
-using TMPro;
 
 namespace Orpaits.NPC
 {
@@ -40,6 +41,15 @@ namespace Orpaits.NPC
         [Tooltip("Icons required for the bonus trade (always >= standardTradeCost).")]
         private int bonusTradeCost = 25;
 
+        [Header("Interaction")]
+        [SerializeField]
+        [Tooltip("Distance (world units) the player must be within for the dialog to open.")]
+        private float interactionRadius = 2.5f;
+
+        [SerializeField]
+        [Tooltip("Tag used to find the player.")]
+        private string playerTag = "Player";
+
         [Header("Dialog")]
         [SerializeField]
         [Tooltip("Dialog UI root (Canvas). Auto-shown when player enters range.")]
@@ -72,6 +82,20 @@ namespace Orpaits.NPC
         [Tooltip("Optional sprite shown after the NPC becomes inactive (post-trade).")]
         private Sprite inactiveSprite;
 
+        [Header("Failed-Trade Penalty")]
+        [SerializeField]
+        [Tooltip("Cancelling with fewer than the required icons sends the player back to the start.")]
+        private bool punishCancelWhenBroke = true;
+
+        [SerializeField]
+        [Tooltip("Penalty reloads the whole scene. Uncheck to only teleport the player back and clear icons.")]
+        private bool reloadSceneOnPenalty = true;
+
+        [SerializeField]
+        [Tooltip("Start point used by the penalty when the scene is not reloaded. " +
+                 "Falls back to the player's position at scene start.")]
+        private Transform startPoint;
+
         [Header("Persistence")]
         [SerializeField]
         [Tooltip("PlayerPrefs key used to remember that this NPC has traded.")]
@@ -94,6 +118,9 @@ namespace Orpaits.NPC
         public bool PlayerInRange { get; private set; }
 
         private SpriteRenderer spriteRenderer;
+        private Transform playerTransform;
+        private PlayerController playerController;
+        private Vector2 playerStartPosition;
 
         // ─────────────────────────── Lifecycle ───────────────────────────
 
@@ -102,15 +129,30 @@ namespace Orpaits.NPC
             spriteRenderer = GetComponent<SpriteRenderer>();
             if (animator == null) animator = GetComponent<Animator>();
             var col = GetComponent<Collider2D>();
-            col.isTrigger = true;
+            col.isTrigger = true; // NPC must never block the player
 
             // Restore trade state from PlayerPrefs
             HasTraded = PlayerPrefs.GetInt(tradePlayerPrefsKey, 0) == 1;
 
+            // Always start hidden — the dialog is only ever opened by proximity.
+            if (dialogRoot != null) dialogRoot.SetActive(false);
+
             if (HasTraded)
                 BecomeInactive();
-            else if (dialogRoot != null)
-                dialogRoot.SetActive(false); // hidden until player approaches
+        }
+
+        private void Start()
+        {
+            var playerGO = GameObject.FindGameObjectWithTag(playerTag);
+            if (playerGO == null)
+            {
+                Debug.LogError($"[AntiVirusNPC] No GameObject tagged '{playerTag}' found.", this);
+                return;
+            }
+
+            playerTransform = playerGO.transform;
+            playerController = playerGO.GetComponent<PlayerController>();
+            playerStartPosition = playerTransform.position;
         }
 
         private void OnEnable()
@@ -127,19 +169,23 @@ namespace Orpaits.NPC
 
         // ───────────────────────── Proximity ─────────────────────────────
 
-        private void OnTriggerEnter2D(Collider2D other)
+        /// <summary>
+        /// Distance is the single source of truth for range. Trigger callbacks
+        /// were unreliable here — child colliders, a re-sized collider, or a
+        /// missed Exit left the dialog open with the player far away.
+        /// </summary>
+        private void Update()
         {
-            if (HasTraded) return;
-            if (!other.CompareTag("Player")) return;
-            PlayerInRange = true;
-            ShowDialog();
-        }
+            bool inRange =
+                !HasTraded &&
+                playerTransform != null &&
+                Vector2.Distance(transform.position, playerTransform.position) <= interactionRadius;
 
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (!other.CompareTag("Player")) return;
-            PlayerInRange = false;
-            HideDialog();
+            if (inRange == PlayerInRange) return;
+
+            PlayerInRange = inRange;
+            if (inRange) ShowDialog();
+            else HideDialog();
         }
 
         // ─────────────────────────── Dialog ──────────────────────────────
@@ -238,10 +284,55 @@ namespace Orpaits.NPC
             LoadBossArena();
         }
 
-        /// <summary>Cancel button handler. Just hides the dialog.</summary>
+        /// <summary>
+        /// Cancel button handler. Hides the dialog — and, if the player walked up
+        /// here without enough icons, resets the run (see <see cref="ApplyFailedTradePenalty"/>).
+        /// </summary>
         public void OnCancelClicked()
         {
             HideDialog();
+            PlayerInRange = false;
+
+            if (HasTraded || !punishCancelWhenBroke) return;
+
+            var icons = IconCollectionManager.Instance;
+            int count = icons != null ? icons.Count : 0;
+            if (count >= standardTradeCost) return;
+
+            ApplyFailedTradePenalty();
+        }
+
+        /// <summary>
+        /// Player cancelled without the required icons: send them back to the
+        /// start and wipe run progress, either by reloading the scene or by
+        /// teleporting + clearing the inventory in place.
+        /// </summary>
+        private void ApplyFailedTradePenalty()
+        {
+            Debug.Log("[AntiVirusNPC] Trade cancelled without enough icons — resetting run.");
+
+            if (reloadSceneOnPenalty)
+            {
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.ReloadCurrentScene();
+                }
+                else
+                {
+                    Time.timeScale = 1f;
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+                return;
+            }
+
+            if (IconCollectionManager.Instance != null)
+                IconCollectionManager.Instance.ResetForNewGame();
+
+            Vector2 target = startPoint != null ? (Vector2)startPoint.position : playerStartPosition;
+            if (playerController != null)
+                playerController.ResetToPosition(target);
+            else if (playerTransform != null)
+                playerTransform.position = target;
         }
 
         // ─────────────────────── Reward / Scene ──────────────────────────
@@ -286,9 +377,7 @@ namespace Orpaits.NPC
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = new Color(0.2f, 0.85f, 0.85f, 0.5f); // cyan
-            var col = GetComponent<Collider2D>();
-            if (col != null)
-                Gizmos.DrawCube(col.bounds.center, col.bounds.size);
+            Gizmos.DrawWireSphere(transform.position, interactionRadius);
         }
     }
 }
