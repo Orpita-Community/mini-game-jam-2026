@@ -43,6 +43,11 @@ namespace Orpaits.UI
         [SerializeField] private AudioSource uiAudio;
         [SerializeField] private AudioClip confirmSfx;
 
+        [Header("Audio UI Tint")]
+        [SerializeField] private Color enabledTint = new Color(1f, 1f, 1f, 1f);
+
+        [SerializeField] private Color mutedTint = new Color(0.65f, 0.65f, 0.65f, 100f / 255f);
+
         private void Start()
         {
             Time.timeScale = 1f;
@@ -142,6 +147,29 @@ namespace Orpaits.UI
 
             UpdateMuteButtonLabel(musicMuteButton, AudioSettingsChannel.IsMusicMuted, "Music: ON", "Music: OFF");
             UpdateMuteButtonLabel(sfxMuteButton, AudioSettingsChannel.IsSfxMuted, "SFX: ON", "SFX: OFF");
+
+            SetSelectableTint(musicMuteButton, musicSlider, AudioSettingsChannel.IsMusicMuted);
+            SetSelectableTint(sfxMuteButton, sfxSlider, AudioSettingsChannel.IsSfxMuted);
+        }
+
+        private void SetSelectableTint(Selectable primaryControl, Selectable secondaryControl, bool muted)
+        {
+            Color tint = muted ? mutedTint : enabledTint;
+
+            ApplyTint(primaryControl, tint);
+            ApplyTint(secondaryControl, tint);
+        }
+
+        private static void ApplyTint(Selectable control, Color tint)
+        {
+            if (control == null)
+                return;
+
+            Graphic[] graphics = control.GetComponentsInChildren<Graphic>(true);
+            foreach (Graphic graphic in graphics)
+            {
+                graphic.color = tint;
+            }
         }
 
         private static void UpdateMuteButtonLabel(Button button, bool muted, string onText, string offText)

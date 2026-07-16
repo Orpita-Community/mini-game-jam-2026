@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Orpaits.Collectibles;
+using Orpaits.Core;
 using Orpaits.UI;
-using TMPro;
 
 namespace Orpaits.NPC
 {
@@ -24,7 +24,7 @@ namespace Orpaits.NPC
     /// game-loop-260712_2137.md (Transaction Phase).
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public class AntiVirusNPC : MonoBehaviour
+    public class AntiVirusNPC : MonoBehaviour, IPowerTradeAudioSource
     {
         [Header("Identity")]
         [SerializeField]
@@ -82,8 +82,16 @@ namespace Orpaits.NPC
         [Tooltip("Animator driving Idle/Talking states. Bool parameter 'IsTalking' is set automatically.")]
         private Animator animator;
 
+        [Header("Audio")]
+        [SerializeField]
+        private AudioClip powerTradeSfx;
+
         /// <summary>Animator bool parameter name used to switch to Talking state.</summary>
         public const string IsTalkingParam = "IsTalking";
+
+        public AudioClip PowerTradeSfx => powerTradeSfx;
+
+        public event System.Action OnTradeCompleted;
 
         // ───────────────────────────── State ─────────────────────────────
 
@@ -232,6 +240,8 @@ namespace Orpaits.NPC
 
             HideDialog();
             BecomeInactive();
+
+            OnTradeCompleted?.Invoke();
 
             // Open the boss door (if assigned) and load the arena scene
             if (bossDoor != null) bossDoor.SetActive(false);

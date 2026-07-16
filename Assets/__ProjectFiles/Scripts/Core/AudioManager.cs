@@ -75,19 +75,12 @@ namespace Orpaits.Core
         private bool sfxMuted;
 
         private readonly Dictionary<IEnemyAudioSource, Action<float>> damageHandlers = new();
-        private readonly Dictionary<IEnemyAudioSource, Action> deathHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> phaseHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> telegraphHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> shockwaveHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action<float>> platformDeletionHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> bossDefeatedHandlers = new();
         private readonly Dictionary<IPlayerAudioSource, Action> playerJumpHandlers = new();
-        private readonly Dictionary<IPlayerAudioSource, Action> playerLandHandlers = new();
         private readonly Dictionary<IPlayerAudioSource, Action> playerThrowHandlers = new();
-        private readonly Dictionary<IPlayerAudioSource, Action<bool>> playerSkidHandlers = new();
         private readonly Dictionary<IPlayerAudioSource, Action<float>> playerDamageHandlers = new();
         private readonly Dictionary<IPlayerAudioSource, Action> playerDeathHandlers = new();
-        private readonly Dictionary<IPlayerAudioSource, Action> playerRespawnHandlers = new();
+        private readonly Dictionary<ICheckpointAudioSource, Action> checkpointHandlers = new();
+        private readonly Dictionary<IPowerTradeAudioSource, Action> tradeHandlers = new();
 
         private void Awake()
         {
@@ -144,45 +137,12 @@ namespace Orpaits.Core
             if (enemy == null || damageHandlers.ContainsKey(enemy))
                 return;
 
-            Action<float> damageHandler = _ =>
-            {
-                if (enemy.HealthNormalized > 0f)
-                    TryPlaySfx(enemy.DamageSfx);
-            };
-            Action deathHandler = () => TryPlaySfx(enemy.DeathSfx);
+            Action<float> damageHandler = _ => TryPlaySfx(enemy.DamageSfx);
 
             damageHandlers[enemy] = damageHandler;
-            deathHandlers[enemy] = deathHandler;
 
             enemy.OnDamageTaken += damageHandler;
-            enemy.OnDeath += deathHandler;
 
-            if (enemy is IBossAudioSource boss)
-            {
-                Action phaseHandler = () => TryPlaySfx(boss.PhaseTransitionSfx);
-                phaseHandlers[boss] = phaseHandler;
-                boss.OnPhaseTransition += phaseHandler;
-
-                Action telegraphHandler = () => TryPlaySfx(boss.TelegraphSfx);
-                Action shockwaveHandler = () => TryPlaySfx(boss.ShockwaveSfx);
-                Action<float> deletionHandler = _ => TryPlaySfx(boss.PlatformDeletionSfx);
-                Action defeatedHandler = () =>
-                {
-                    TryPlaySfx(boss.DefeatedSfx);
-                    if (boss.DefeatedMusic != null)
-                        PlayMusic(boss.DefeatedMusic);
-                };
-
-                telegraphHandlers[boss] = telegraphHandler;
-                shockwaveHandlers[boss] = shockwaveHandler;
-                platformDeletionHandlers[boss] = deletionHandler;
-                bossDefeatedHandlers[boss] = defeatedHandler;
-
-                boss.OnAttackTelegraph += telegraphHandler;
-                boss.OnShockwave += shockwaveHandler;
-                boss.OnPlatformDeletion += deletionHandler;
-                boss.OnBossDefeated += defeatedHandler;
-            }
         }
 
         public void RegisterPlayer(IPlayerAudioSource player)
@@ -191,32 +151,39 @@ namespace Orpaits.Core
                 return;
 
             Action jumpHandler = () => TryPlaySfx(player.JumpSfx);
-            Action landHandler = () => TryPlaySfx(player.LandSfx);
-            Action throwHandler = () => TryPlaySfx(player.ThrowSfx);
-            Action<bool> skidHandler = isSkidding =>
-            {
-                if (isSkidding)
-                    TryPlaySfx(player.SkidSfx);
-            };
-            Action<float> damageHandler = _ => TryPlaySfx(player.DamageSfx);
-            Action deathHandler = () => TryPlaySfx(player.DeathSfx);
-            Action respawnHandler = () => TryPlaySfx(player.RespawnSfx);
+            Action throwHandler = () => TryPlaySfx(player.ThrowDiskSfx);
+            Action<float> damageHandler = _ => TryPlaySfx(player.HitHurtSfx);
+            Action deathHandler = () => TryPlaySfx(player.GameOverSfx);
 
             playerJumpHandlers[player] = jumpHandler;
-            playerLandHandlers[player] = landHandler;
             playerThrowHandlers[player] = throwHandler;
-            playerSkidHandlers[player] = skidHandler;
             playerDamageHandlers[player] = damageHandler;
             playerDeathHandlers[player] = deathHandler;
-            playerRespawnHandlers[player] = respawnHandler;
 
             player.OnJump += jumpHandler;
-            player.OnLand += landHandler;
             player.OnThrow += throwHandler;
-            player.OnSkidChanged += skidHandler;
             player.OnDamageTaken += damageHandler;
             player.OnDeath += deathHandler;
-            player.OnRespawn += respawnHandler;
+        }
+
+        public void RegisterCheckpoint(ICheckpointAudioSource checkpoint)
+        {
+            if (checkpoint == null || checkpointHandlers.ContainsKey(checkpoint))
+                return;
+
+            Action checkpointHandler = () => TryPlaySfx(checkpoint.CheckpointSfx);
+            checkpointHandlers[checkpoint] = checkpointHandler;
+            checkpoint.OnCheckpointActivated += checkpointHandler;
+        }
+
+        public void RegisterTradeSource(IPowerTradeAudioSource tradeSource)
+        {
+            if (tradeSource == null || tradeHandlers.ContainsKey(tradeSource))
+                return;
+
+            Action tradeHandler = () => TryPlaySfx(tradeSource.PowerTradeSfx);
+            tradeHandlers[tradeSource] = tradeHandler;
+            tradeSource.OnTradeCompleted += tradeHandler;
         }
 
         public void UnregisterEnemy(IEnemyAudioSource enemy)
@@ -230,44 +197,6 @@ namespace Orpaits.Core
                 damageHandlers.Remove(enemy);
             }
 
-            if (deathHandlers.TryGetValue(enemy, out var deathHandler))
-            {
-                enemy.OnDeath -= deathHandler;
-                deathHandlers.Remove(enemy);
-            }
-
-            if (enemy is IBossAudioSource boss)
-            {
-                if (phaseHandlers.TryGetValue(boss, out var phaseHandler))
-                {
-                    boss.OnPhaseTransition -= phaseHandler;
-                    phaseHandlers.Remove(boss);
-                }
-
-                if (telegraphHandlers.TryGetValue(boss, out var telegraphHandler))
-                {
-                    boss.OnAttackTelegraph -= telegraphHandler;
-                    telegraphHandlers.Remove(boss);
-                }
-
-                if (shockwaveHandlers.TryGetValue(boss, out var shockwaveHandler))
-                {
-                    boss.OnShockwave -= shockwaveHandler;
-                    shockwaveHandlers.Remove(boss);
-                }
-
-                if (platformDeletionHandlers.TryGetValue(boss, out var deletionHandler))
-                {
-                    boss.OnPlatformDeletion -= deletionHandler;
-                    platformDeletionHandlers.Remove(boss);
-                }
-
-                if (bossDefeatedHandlers.TryGetValue(boss, out var defeatedHandler))
-                {
-                    boss.OnBossDefeated -= defeatedHandler;
-                    bossDefeatedHandlers.Remove(boss);
-                }
-            }
         }
 
         public void UnregisterPlayer(IPlayerAudioSource player)
@@ -281,22 +210,10 @@ namespace Orpaits.Core
                 playerJumpHandlers.Remove(player);
             }
 
-            if (playerLandHandlers.TryGetValue(player, out var landHandler))
-            {
-                player.OnLand -= landHandler;
-                playerLandHandlers.Remove(player);
-            }
-
             if (playerThrowHandlers.TryGetValue(player, out var throwHandler))
             {
                 player.OnThrow -= throwHandler;
                 playerThrowHandlers.Remove(player);
-            }
-
-            if (playerSkidHandlers.TryGetValue(player, out var skidHandler))
-            {
-                player.OnSkidChanged -= skidHandler;
-                playerSkidHandlers.Remove(player);
             }
 
             if (playerDamageHandlers.TryGetValue(player, out var damageHandler))
@@ -310,11 +227,29 @@ namespace Orpaits.Core
                 player.OnDeath -= deathHandler;
                 playerDeathHandlers.Remove(player);
             }
+        }
 
-            if (playerRespawnHandlers.TryGetValue(player, out var respawnHandler))
+        public void UnregisterCheckpoint(ICheckpointAudioSource checkpoint)
+        {
+            if (checkpoint == null)
+                return;
+
+            if (checkpointHandlers.TryGetValue(checkpoint, out var handler))
             {
-                player.OnRespawn -= respawnHandler;
-                playerRespawnHandlers.Remove(player);
+                checkpoint.OnCheckpointActivated -= handler;
+                checkpointHandlers.Remove(checkpoint);
+            }
+        }
+
+        public void UnregisterTradeSource(IPowerTradeAudioSource tradeSource)
+        {
+            if (tradeSource == null)
+                return;
+
+            if (tradeHandlers.TryGetValue(tradeSource, out var handler))
+            {
+                tradeSource.OnTradeCompleted -= handler;
+                tradeHandlers.Remove(tradeSource);
             }
         }
 
@@ -435,6 +370,12 @@ namespace Orpaits.Core
 
                 if (behaviour is IPlayerAudioSource player)
                     RegisterPlayer(player);
+
+                if (behaviour is ICheckpointAudioSource checkpoint)
+                    RegisterCheckpoint(checkpoint);
+
+                if (behaviour is IPowerTradeAudioSource tradeSource)
+                    RegisterTradeSource(tradeSource);
             }
         }
 
@@ -443,6 +384,21 @@ namespace Orpaits.Core
             foreach (IEnemyAudioSource enemy in new List<IEnemyAudioSource>(damageHandlers.Keys))
             {
                 UnregisterEnemy(enemy);
+            }
+
+            foreach (IPlayerAudioSource player in new List<IPlayerAudioSource>(playerJumpHandlers.Keys))
+            {
+                UnregisterPlayer(player);
+            }
+
+            foreach (ICheckpointAudioSource checkpoint in new List<ICheckpointAudioSource>(checkpointHandlers.Keys))
+            {
+                UnregisterCheckpoint(checkpoint);
+            }
+
+            foreach (IPowerTradeAudioSource tradeSource in new List<IPowerTradeAudioSource>(tradeHandlers.Keys))
+            {
+                UnregisterTradeSource(tradeSource);
             }
         }
 

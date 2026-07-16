@@ -16,7 +16,7 @@ namespace Orpaits.Enemies
     /// Design reference: level-design-260712_2153.md (Boss Fight Details),
     /// game-loop-260712_2137.md (Combat Phase)
     /// </summary>
-    public class BossVirus : BaseEnemy, IBossAudioSource
+    public class BossVirus : BaseEnemy
     {
         public enum BossPhase
         {
@@ -66,22 +66,6 @@ namespace Orpaits.Enemies
         [SerializeField]
         private LayerMask platformLayer;
 
-        [Header("Boss Audio")]
-        [SerializeField]
-        private AudioClip telegraphSfx;
-
-        [SerializeField]
-        private AudioClip shockwaveSfx;
-
-        [SerializeField]
-        private AudioClip platformDeletionSfx;
-
-        [SerializeField]
-        private AudioClip defeatedSfx;
-
-        [SerializeField]
-        private AudioClip defeatedMusic;
-
         /// <summary>Fired when the boss transitions to a new phase, with the phase value for gameplay systems.</summary>
         public event Action<BossPhase> OnPhaseChanged;
 
@@ -99,16 +83,6 @@ namespace Orpaits.Enemies
 
         /// <summary>Fired when the boss is defeated and the arena should unlock.</summary>
         public event Action OnBossDefeated;
-
-        public AudioClip TelegraphSfx => telegraphSfx;
-
-        public AudioClip ShockwaveSfx => shockwaveSfx;
-
-        public AudioClip PlatformDeletionSfx => platformDeletionSfx;
-
-        public AudioClip DefeatedSfx => defeatedSfx;
-
-        public AudioClip DefeatedMusic => defeatedMusic;
 
         public BossPhase CurrentPhase { get; private set; } = BossPhase.Phase1;
         public bool IsBossActive { get; private set; }

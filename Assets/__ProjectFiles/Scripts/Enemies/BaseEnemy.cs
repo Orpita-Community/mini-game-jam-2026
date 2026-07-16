@@ -30,12 +30,6 @@ namespace Orpaits.Enemies
         [SerializeField]
         protected AudioClip damageSfx;
 
-        [SerializeField]
-        protected AudioClip deathSfx;
-
-        [SerializeField]
-        protected AudioClip phaseTransitionSfx;
-
         /// <summary>Fired when health changes (current / max).</summary>
         public event Action<float, float> OnHealthChanged;
 
@@ -54,10 +48,6 @@ namespace Orpaits.Enemies
         public event Action OnDeath;
 
         public AudioClip DamageSfx => damageSfx;
-
-        public AudioClip DeathSfx => deathSfx;
-
-        public AudioClip PhaseTransitionSfx => phaseTransitionSfx;
 
         /// <summary>
         /// Current health value. Protected setter allows derived classes

@@ -57,12 +57,9 @@ namespace Orpaits.Player
 
         [Header("Audio")]
         [SerializeField] private AudioClip jumpSfx;
-        [SerializeField] private AudioClip landSfx;
-        [SerializeField] private AudioClip throwSfx;
-        [SerializeField] private AudioClip skidSfx;
-        [SerializeField] private AudioClip damageSfx;
-        [SerializeField] private AudioClip deathSfx;
-        [SerializeField] private AudioClip respawnSfx;
+        [SerializeField] private AudioClip hitHurtSfx;
+        [SerializeField] private AudioClip gameOverSfx;
+        [SerializeField] private AudioClip throwDiskSfx;
 
         // --- OBSERVER EVENTS ---
         public event Action<float> OnMove;
@@ -77,17 +74,11 @@ namespace Orpaits.Player
 
         public AudioClip JumpSfx => jumpSfx;
 
-        public AudioClip LandSfx => landSfx;
+        public AudioClip HitHurtSfx => hitHurtSfx;
 
-        public AudioClip ThrowSfx => throwSfx;
+        public AudioClip GameOverSfx => gameOverSfx;
 
-        public AudioClip SkidSfx => skidSfx;
-
-        public AudioClip DamageSfx => damageSfx;
-
-        public AudioClip DeathSfx => deathSfx;
-
-        public AudioClip RespawnSfx => respawnSfx;
+        public AudioClip ThrowDiskSfx => throwDiskSfx;
         private bool isSkidding;
 
         // State & Component References

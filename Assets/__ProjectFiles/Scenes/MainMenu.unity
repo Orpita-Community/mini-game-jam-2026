@@ -183,6 +183,8 @@ MonoBehaviour:
   firstSelected: {fileID: 2043622245}
   uiAudio: {fileID: 1122946407}
   confirmSfx: {fileID: 0}
+  enabledTint: {r: 1, g: 1, b: 1, a: 1}
+  mutedTint: {r: 0.65, g: 0.65, b: 0.65, a: 0.39215687}
 --- !u!1 &88469241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,7 +2018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Core.GameManager
   mainMenuScene: MainMenu
   gameplayScene: SampleScene
-  bossArenaScene: BossArena
+  bossArenaScene: Boss
 --- !u!4 &901717014
 Transform:
   m_ObjectHideFlags: 0
@@ -3465,8 +3467,8 @@ MonoBehaviour:
   loopMusic: 1
   defaultMusic: {fileID: 8300000, guid: f6f6543498faad242aceca888c97ee6f, type: 3}
   sceneMusic:
-  - sceneName: SampleScene
-    music: {fileID: 0}
+  - sceneName: Boss
+    music: {fileID: 8300000, guid: 9c9c1e4cac1c98046930548751bd7d0a, type: 3}
 --- !u!1 &1931444914
 GameObject:
   m_ObjectHideFlags: 0

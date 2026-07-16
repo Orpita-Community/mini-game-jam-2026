@@ -2248,6 +2248,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 0}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &583211119
 SpriteRenderer:
   serializedVersion: 3
@@ -4335,6 +4336,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 0}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &1197322631
 SpriteRenderer:
   serializedVersion: 3
@@ -6610,6 +6612,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 808790286281417500, guid: 3d6a267ae7de79c428ea06176a6141b1, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 808790286281417500, guid: 3d6a267ae7de79c428ea06176a6141b1, type: 3}
       propertyPath: projectilePool
       value: 
