@@ -11040,6 +11040,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
+      propertyPath: jumpSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 192
       objectReference: {fileID: 0}

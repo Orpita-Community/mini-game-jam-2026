@@ -11,7 +11,7 @@ namespace Orpaits.Player
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CapsuleCollider2D))]
-    public class PlayerController : MonoBehaviour, IDamageable
+    public class PlayerController : MonoBehaviour, IDamageable, IPlayerAudioSource
     {
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 8f;
@@ -55,6 +55,15 @@ namespace Orpaits.Player
         [SerializeField] private InputActionReference jumpAction;
         [SerializeField] private InputActionReference throwAction;
 
+        [Header("Audio")]
+        [SerializeField] private AudioClip jumpSfx;
+        [SerializeField] private AudioClip landSfx;
+        [SerializeField] private AudioClip throwSfx;
+        [SerializeField] private AudioClip skidSfx;
+        [SerializeField] private AudioClip damageSfx;
+        [SerializeField] private AudioClip deathSfx;
+        [SerializeField] private AudioClip respawnSfx;
+
         // --- OBSERVER EVENTS ---
         public event Action<float> OnMove;
         public event Action OnJump;
@@ -65,6 +74,20 @@ namespace Orpaits.Player
         public event Action OnDeath;
         public event Action OnRespawn;
         public event Action<bool> OnSkidChanged;
+
+        public AudioClip JumpSfx => jumpSfx;
+
+        public AudioClip LandSfx => landSfx;
+
+        public AudioClip ThrowSfx => throwSfx;
+
+        public AudioClip SkidSfx => skidSfx;
+
+        public AudioClip DamageSfx => damageSfx;
+
+        public AudioClip DeathSfx => deathSfx;
+
+        public AudioClip RespawnSfx => respawnSfx;
         private bool isSkidding;
 
         // State & Component References

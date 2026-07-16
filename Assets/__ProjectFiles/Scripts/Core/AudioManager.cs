@@ -32,6 +32,9 @@ namespace Orpaits.Core
         private AudioMixer audioMixer;
 
         [SerializeField]
+        private bool useAudioMixerForVolume = false;
+
+        [SerializeField]
         private AudioMixerGroup musicOutputGroup;
 
         [SerializeField]
@@ -66,6 +69,11 @@ namespace Orpaits.Core
         [SerializeField]
         private SceneMusicEntry[] sceneMusic;
 
+        private float musicVolume = 1f;
+        private float sfxVolume = 1f;
+        private bool musicMuted;
+        private bool sfxMuted;
+
         private readonly Dictionary<IEnemyAudioSource, Action<float>> damageHandlers = new();
         private readonly Dictionary<IEnemyAudioSource, Action> deathHandlers = new();
         private readonly Dictionary<IBossAudioSource, Action> phaseHandlers = new();
@@ -73,6 +81,13 @@ namespace Orpaits.Core
         private readonly Dictionary<IBossAudioSource, Action> shockwaveHandlers = new();
         private readonly Dictionary<IBossAudioSource, Action<float>> platformDeletionHandlers = new();
         private readonly Dictionary<IBossAudioSource, Action> bossDefeatedHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerJumpHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerLandHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerThrowHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action<bool>> playerSkidHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action<float>> playerDamageHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerDeathHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerRespawnHandlers = new();
 
         private void Awake()
         {
@@ -91,6 +106,12 @@ namespace Orpaits.Core
         private void OnEnable()
         {
             SceneManager.sceneLoaded += HandleSceneLoaded;
+            AudioSettingsChannel.MusicVolumeChanged += HandleMusicVolumeChanged;
+            AudioSettingsChannel.SfxVolumeChanged += HandleSfxVolumeChanged;
+            AudioSettingsChannel.MusicMutedChanged += HandleMusicMutedChanged;
+            AudioSettingsChannel.SfxMutedChanged += HandleSfxMutedChanged;
+
+            ApplySettingsFromChannel();
         }
 
         private void Start()
@@ -104,6 +125,10 @@ namespace Orpaits.Core
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
+            AudioSettingsChannel.MusicVolumeChanged -= HandleMusicVolumeChanged;
+            AudioSettingsChannel.SfxVolumeChanged -= HandleSfxVolumeChanged;
+            AudioSettingsChannel.MusicMutedChanged -= HandleMusicMutedChanged;
+            AudioSettingsChannel.SfxMutedChanged -= HandleSfxMutedChanged;
         }
 
         private void OnDestroy()
@@ -160,6 +185,40 @@ namespace Orpaits.Core
             }
         }
 
+        public void RegisterPlayer(IPlayerAudioSource player)
+        {
+            if (player == null || playerJumpHandlers.ContainsKey(player))
+                return;
+
+            Action jumpHandler = () => TryPlaySfx(player.JumpSfx);
+            Action landHandler = () => TryPlaySfx(player.LandSfx);
+            Action throwHandler = () => TryPlaySfx(player.ThrowSfx);
+            Action<bool> skidHandler = isSkidding =>
+            {
+                if (isSkidding)
+                    TryPlaySfx(player.SkidSfx);
+            };
+            Action<float> damageHandler = _ => TryPlaySfx(player.DamageSfx);
+            Action deathHandler = () => TryPlaySfx(player.DeathSfx);
+            Action respawnHandler = () => TryPlaySfx(player.RespawnSfx);
+
+            playerJumpHandlers[player] = jumpHandler;
+            playerLandHandlers[player] = landHandler;
+            playerThrowHandlers[player] = throwHandler;
+            playerSkidHandlers[player] = skidHandler;
+            playerDamageHandlers[player] = damageHandler;
+            playerDeathHandlers[player] = deathHandler;
+            playerRespawnHandlers[player] = respawnHandler;
+
+            player.OnJump += jumpHandler;
+            player.OnLand += landHandler;
+            player.OnThrow += throwHandler;
+            player.OnSkidChanged += skidHandler;
+            player.OnDamageTaken += damageHandler;
+            player.OnDeath += deathHandler;
+            player.OnRespawn += respawnHandler;
+        }
+
         public void UnregisterEnemy(IEnemyAudioSource enemy)
         {
             if (enemy == null)
@@ -211,6 +270,54 @@ namespace Orpaits.Core
             }
         }
 
+        public void UnregisterPlayer(IPlayerAudioSource player)
+        {
+            if (player == null)
+                return;
+
+            if (playerJumpHandlers.TryGetValue(player, out var jumpHandler))
+            {
+                player.OnJump -= jumpHandler;
+                playerJumpHandlers.Remove(player);
+            }
+
+            if (playerLandHandlers.TryGetValue(player, out var landHandler))
+            {
+                player.OnLand -= landHandler;
+                playerLandHandlers.Remove(player);
+            }
+
+            if (playerThrowHandlers.TryGetValue(player, out var throwHandler))
+            {
+                player.OnThrow -= throwHandler;
+                playerThrowHandlers.Remove(player);
+            }
+
+            if (playerSkidHandlers.TryGetValue(player, out var skidHandler))
+            {
+                player.OnSkidChanged -= skidHandler;
+                playerSkidHandlers.Remove(player);
+            }
+
+            if (playerDamageHandlers.TryGetValue(player, out var damageHandler))
+            {
+                player.OnDamageTaken -= damageHandler;
+                playerDamageHandlers.Remove(player);
+            }
+
+            if (playerDeathHandlers.TryGetValue(player, out var deathHandler))
+            {
+                player.OnDeath -= deathHandler;
+                playerDeathHandlers.Remove(player);
+            }
+
+            if (playerRespawnHandlers.TryGetValue(player, out var respawnHandler))
+            {
+                player.OnRespawn -= respawnHandler;
+                playerRespawnHandlers.Remove(player);
+            }
+        }
+
         public void PlayMusic(AudioClip clip, bool restart = true)
         {
             if (musicSource == null || clip == null)
@@ -240,12 +347,40 @@ namespace Orpaits.Core
 
         public void SetMusicVolume(float normalizedVolume)
         {
-            SetMixerVolume(musicVolumeParameter, normalizedVolume);
+            AudioSettingsChannel.SetMusicVolume(normalizedVolume);
         }
 
         public void SetSfxVolume(float normalizedVolume)
         {
-            SetMixerVolume(sfxVolumeParameter, normalizedVolume);
+            AudioSettingsChannel.SetSfxVolume(normalizedVolume);
+        }
+
+        public void SetMusicMuted(bool muted)
+        {
+            AudioSettingsChannel.SetMusicMuted(muted);
+        }
+
+        public void SetSfxMuted(bool muted)
+        {
+            AudioSettingsChannel.SetSfxMuted(muted);
+        }
+
+        public bool IsMusicMuted => musicMuted;
+
+        public bool IsSfxMuted => sfxMuted;
+
+        public float MusicVolume => musicVolume;
+
+        public float SfxVolume => sfxVolume;
+
+        public void ToggleMusicMuted()
+        {
+            AudioSettingsChannel.ToggleMusicMuted();
+        }
+
+        public void ToggleSfxMuted()
+        {
+            AudioSettingsChannel.ToggleSfxMuted();
         }
 
         public void PlaySfx(AudioClip clip)
@@ -297,6 +432,9 @@ namespace Orpaits.Core
             {
                 if (behaviour is IEnemyAudioSource enemy)
                     RegisterEnemy(enemy);
+
+                if (behaviour is IPlayerAudioSource player)
+                    RegisterPlayer(player);
             }
         }
 
@@ -333,6 +471,64 @@ namespace Orpaits.Core
             sfxSource.loop = false;
             sfxSource.spatialBlend = 0f;
             sfxSource.outputAudioMixerGroup = sfxOutputGroup;
+
+            ApplyMusicVolume();
+            ApplySfxVolume();
+        }
+
+        private void ApplySettingsFromChannel()
+        {
+            musicVolume = AudioSettingsChannel.MusicVolume;
+            sfxVolume = AudioSettingsChannel.SfxVolume;
+            musicMuted = AudioSettingsChannel.IsMusicMuted;
+            sfxMuted = AudioSettingsChannel.IsSfxMuted;
+
+            ApplyMusicVolume();
+            ApplySfxVolume();
+        }
+
+        private void HandleMusicVolumeChanged(float volume)
+        {
+            musicVolume = volume;
+            ApplyMusicVolume();
+        }
+
+        private void HandleSfxVolumeChanged(float volume)
+        {
+            sfxVolume = volume;
+            ApplySfxVolume();
+        }
+
+        private void HandleMusicMutedChanged(bool muted)
+        {
+            musicMuted = muted;
+            ApplyMusicVolume();
+        }
+
+        private void HandleSfxMutedChanged(bool muted)
+        {
+            sfxMuted = muted;
+            ApplySfxVolume();
+        }
+
+        private void ApplyMusicVolume()
+        {
+            float appliedVolume = musicMuted ? 0f : musicVolume;
+            if (musicSource != null)
+                musicSource.volume = appliedVolume;
+
+            if (useAudioMixerForVolume)
+                SetMixerVolume(musicVolumeParameter, appliedVolume);
+        }
+
+        private void ApplySfxVolume()
+        {
+            float appliedVolume = sfxMuted ? 0f : sfxVolume;
+            if (sfxSource != null)
+                sfxSource.volume = appliedVolume;
+
+            if (useAudioMixerForVolume)
+                SetMixerVolume(sfxVolumeParameter, appliedVolume);
         }
 
         private AudioSource CreateManagedSource(string sourceName)
@@ -354,7 +550,16 @@ namespace Orpaits.Core
 
             float clamped = Mathf.Clamp01(normalizedVolume);
             float decibels = clamped <= 0.0001f ? -80f : Mathf.Log10(clamped) * 20f;
-            audioMixer.SetFloat(parameterName, decibels);
+
+            try
+            {
+                audioMixer.SetFloat(parameterName, decibels);
+            }
+            catch (ArgumentException)
+            {
+                Debug.LogWarning($"[AudioManager] Mixer parameter '{parameterName}' is not exposed. Falling back to AudioSource volume only.");
+                useAudioMixerForVolume = false;
+            }
         }
     }
 }
