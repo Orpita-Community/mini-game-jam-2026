@@ -8,16 +8,8 @@ namespace Orpaits.Core
     /// </summary>
     public interface IEnemyAudioSource
     {
-        float HealthNormalized { get; }
-
         AudioClip DamageSfx { get; }
 
-        AudioClip DeathSfx { get; }
-
-        AudioClip PhaseTransitionSfx { get; }
-
         event Action<float> OnDamageTaken;
-
-        event Action OnDeath;
     }
 }

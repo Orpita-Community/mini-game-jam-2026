@@ -32,6 +32,9 @@ namespace Orpaits.Core
         private AudioMixer audioMixer;
 
         [SerializeField]
+        private bool useAudioMixerForVolume = false;
+
+        [SerializeField]
         private AudioMixerGroup musicOutputGroup;
 
         [SerializeField]
@@ -66,13 +69,18 @@ namespace Orpaits.Core
         [SerializeField]
         private SceneMusicEntry[] sceneMusic;
 
+        private float musicVolume = 1f;
+        private float sfxVolume = 1f;
+        private bool musicMuted;
+        private bool sfxMuted;
+
         private readonly Dictionary<IEnemyAudioSource, Action<float>> damageHandlers = new();
-        private readonly Dictionary<IEnemyAudioSource, Action> deathHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> phaseHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> telegraphHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> shockwaveHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action<float>> platformDeletionHandlers = new();
-        private readonly Dictionary<IBossAudioSource, Action> bossDefeatedHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerJumpHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerThrowHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action<float>> playerDamageHandlers = new();
+        private readonly Dictionary<IPlayerAudioSource, Action> playerDeathHandlers = new();
+        private readonly Dictionary<ICheckpointAudioSource, Action> checkpointHandlers = new();
+        private readonly Dictionary<IPowerTradeAudioSource, Action> tradeHandlers = new();
 
         private void Awake()
         {
@@ -91,6 +99,12 @@ namespace Orpaits.Core
         private void OnEnable()
         {
             SceneManager.sceneLoaded += HandleSceneLoaded;
+            AudioSettingsChannel.MusicVolumeChanged += HandleMusicVolumeChanged;
+            AudioSettingsChannel.SfxVolumeChanged += HandleSfxVolumeChanged;
+            AudioSettingsChannel.MusicMutedChanged += HandleMusicMutedChanged;
+            AudioSettingsChannel.SfxMutedChanged += HandleSfxMutedChanged;
+
+            ApplySettingsFromChannel();
         }
 
         private void Start()
@@ -104,6 +118,10 @@ namespace Orpaits.Core
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
+            AudioSettingsChannel.MusicVolumeChanged -= HandleMusicVolumeChanged;
+            AudioSettingsChannel.SfxVolumeChanged -= HandleSfxVolumeChanged;
+            AudioSettingsChannel.MusicMutedChanged -= HandleMusicMutedChanged;
+            AudioSettingsChannel.SfxMutedChanged -= HandleSfxMutedChanged;
         }
 
         private void OnDestroy()
@@ -119,45 +137,53 @@ namespace Orpaits.Core
             if (enemy == null || damageHandlers.ContainsKey(enemy))
                 return;
 
-            Action<float> damageHandler = _ =>
-            {
-                if (enemy.HealthNormalized > 0f)
-                    TryPlaySfx(enemy.DamageSfx);
-            };
-            Action deathHandler = () => TryPlaySfx(enemy.DeathSfx);
+            Action<float> damageHandler = _ => TryPlaySfx(enemy.DamageSfx);
 
             damageHandlers[enemy] = damageHandler;
-            deathHandlers[enemy] = deathHandler;
 
             enemy.OnDamageTaken += damageHandler;
-            enemy.OnDeath += deathHandler;
 
-            if (enemy is IBossAudioSource boss)
-            {
-                Action phaseHandler = () => TryPlaySfx(boss.PhaseTransitionSfx);
-                phaseHandlers[boss] = phaseHandler;
-                boss.OnPhaseTransition += phaseHandler;
+        }
 
-                Action telegraphHandler = () => TryPlaySfx(boss.TelegraphSfx);
-                Action shockwaveHandler = () => TryPlaySfx(boss.ShockwaveSfx);
-                Action<float> deletionHandler = _ => TryPlaySfx(boss.PlatformDeletionSfx);
-                Action defeatedHandler = () =>
-                {
-                    TryPlaySfx(boss.DefeatedSfx);
-                    if (boss.DefeatedMusic != null)
-                        PlayMusic(boss.DefeatedMusic);
-                };
+        public void RegisterPlayer(IPlayerAudioSource player)
+        {
+            if (player == null || playerJumpHandlers.ContainsKey(player))
+                return;
 
-                telegraphHandlers[boss] = telegraphHandler;
-                shockwaveHandlers[boss] = shockwaveHandler;
-                platformDeletionHandlers[boss] = deletionHandler;
-                bossDefeatedHandlers[boss] = defeatedHandler;
+            Action jumpHandler = () => TryPlaySfx(player.JumpSfx);
+            Action throwHandler = () => TryPlaySfx(player.ThrowDiskSfx);
+            Action<float> damageHandler = _ => TryPlaySfx(player.HitHurtSfx);
+            Action deathHandler = () => TryPlaySfx(player.GameOverSfx);
 
-                boss.OnAttackTelegraph += telegraphHandler;
-                boss.OnShockwave += shockwaveHandler;
-                boss.OnPlatformDeletion += deletionHandler;
-                boss.OnBossDefeated += defeatedHandler;
-            }
+            playerJumpHandlers[player] = jumpHandler;
+            playerThrowHandlers[player] = throwHandler;
+            playerDamageHandlers[player] = damageHandler;
+            playerDeathHandlers[player] = deathHandler;
+
+            player.OnJump += jumpHandler;
+            player.OnThrow += throwHandler;
+            player.OnDamageTaken += damageHandler;
+            player.OnDeath += deathHandler;
+        }
+
+        public void RegisterCheckpoint(ICheckpointAudioSource checkpoint)
+        {
+            if (checkpoint == null || checkpointHandlers.ContainsKey(checkpoint))
+                return;
+
+            Action checkpointHandler = () => TryPlaySfx(checkpoint.CheckpointSfx);
+            checkpointHandlers[checkpoint] = checkpointHandler;
+            checkpoint.OnCheckpointActivated += checkpointHandler;
+        }
+
+        public void RegisterTradeSource(IPowerTradeAudioSource tradeSource)
+        {
+            if (tradeSource == null || tradeHandlers.ContainsKey(tradeSource))
+                return;
+
+            Action tradeHandler = () => TryPlaySfx(tradeSource.PowerTradeSfx);
+            tradeHandlers[tradeSource] = tradeHandler;
+            tradeSource.OnTradeCompleted += tradeHandler;
         }
 
         public void UnregisterEnemy(IEnemyAudioSource enemy)
@@ -171,43 +197,59 @@ namespace Orpaits.Core
                 damageHandlers.Remove(enemy);
             }
 
-            if (deathHandlers.TryGetValue(enemy, out var deathHandler))
+        }
+
+        public void UnregisterPlayer(IPlayerAudioSource player)
+        {
+            if (player == null)
+                return;
+
+            if (playerJumpHandlers.TryGetValue(player, out var jumpHandler))
             {
-                enemy.OnDeath -= deathHandler;
-                deathHandlers.Remove(enemy);
+                player.OnJump -= jumpHandler;
+                playerJumpHandlers.Remove(player);
             }
 
-            if (enemy is IBossAudioSource boss)
+            if (playerThrowHandlers.TryGetValue(player, out var throwHandler))
             {
-                if (phaseHandlers.TryGetValue(boss, out var phaseHandler))
-                {
-                    boss.OnPhaseTransition -= phaseHandler;
-                    phaseHandlers.Remove(boss);
-                }
+                player.OnThrow -= throwHandler;
+                playerThrowHandlers.Remove(player);
+            }
 
-                if (telegraphHandlers.TryGetValue(boss, out var telegraphHandler))
-                {
-                    boss.OnAttackTelegraph -= telegraphHandler;
-                    telegraphHandlers.Remove(boss);
-                }
+            if (playerDamageHandlers.TryGetValue(player, out var damageHandler))
+            {
+                player.OnDamageTaken -= damageHandler;
+                playerDamageHandlers.Remove(player);
+            }
 
-                if (shockwaveHandlers.TryGetValue(boss, out var shockwaveHandler))
-                {
-                    boss.OnShockwave -= shockwaveHandler;
-                    shockwaveHandlers.Remove(boss);
-                }
+            if (playerDeathHandlers.TryGetValue(player, out var deathHandler))
+            {
+                player.OnDeath -= deathHandler;
+                playerDeathHandlers.Remove(player);
+            }
+        }
 
-                if (platformDeletionHandlers.TryGetValue(boss, out var deletionHandler))
-                {
-                    boss.OnPlatformDeletion -= deletionHandler;
-                    platformDeletionHandlers.Remove(boss);
-                }
+        public void UnregisterCheckpoint(ICheckpointAudioSource checkpoint)
+        {
+            if (checkpoint == null)
+                return;
 
-                if (bossDefeatedHandlers.TryGetValue(boss, out var defeatedHandler))
-                {
-                    boss.OnBossDefeated -= defeatedHandler;
-                    bossDefeatedHandlers.Remove(boss);
-                }
+            if (checkpointHandlers.TryGetValue(checkpoint, out var handler))
+            {
+                checkpoint.OnCheckpointActivated -= handler;
+                checkpointHandlers.Remove(checkpoint);
+            }
+        }
+
+        public void UnregisterTradeSource(IPowerTradeAudioSource tradeSource)
+        {
+            if (tradeSource == null)
+                return;
+
+            if (tradeHandlers.TryGetValue(tradeSource, out var handler))
+            {
+                tradeSource.OnTradeCompleted -= handler;
+                tradeHandlers.Remove(tradeSource);
             }
         }
 
@@ -240,12 +282,40 @@ namespace Orpaits.Core
 
         public void SetMusicVolume(float normalizedVolume)
         {
-            SetMixerVolume(musicVolumeParameter, normalizedVolume);
+            AudioSettingsChannel.SetMusicVolume(normalizedVolume);
         }
 
         public void SetSfxVolume(float normalizedVolume)
         {
-            SetMixerVolume(sfxVolumeParameter, normalizedVolume);
+            AudioSettingsChannel.SetSfxVolume(normalizedVolume);
+        }
+
+        public void SetMusicMuted(bool muted)
+        {
+            AudioSettingsChannel.SetMusicMuted(muted);
+        }
+
+        public void SetSfxMuted(bool muted)
+        {
+            AudioSettingsChannel.SetSfxMuted(muted);
+        }
+
+        public bool IsMusicMuted => musicMuted;
+
+        public bool IsSfxMuted => sfxMuted;
+
+        public float MusicVolume => musicVolume;
+
+        public float SfxVolume => sfxVolume;
+
+        public void ToggleMusicMuted()
+        {
+            AudioSettingsChannel.ToggleMusicMuted();
+        }
+
+        public void ToggleSfxMuted()
+        {
+            AudioSettingsChannel.ToggleSfxMuted();
         }
 
         public void PlaySfx(AudioClip clip)
@@ -297,6 +367,15 @@ namespace Orpaits.Core
             {
                 if (behaviour is IEnemyAudioSource enemy)
                     RegisterEnemy(enemy);
+
+                if (behaviour is IPlayerAudioSource player)
+                    RegisterPlayer(player);
+
+                if (behaviour is ICheckpointAudioSource checkpoint)
+                    RegisterCheckpoint(checkpoint);
+
+                if (behaviour is IPowerTradeAudioSource tradeSource)
+                    RegisterTradeSource(tradeSource);
             }
         }
 
@@ -305,6 +384,21 @@ namespace Orpaits.Core
             foreach (IEnemyAudioSource enemy in new List<IEnemyAudioSource>(damageHandlers.Keys))
             {
                 UnregisterEnemy(enemy);
+            }
+
+            foreach (IPlayerAudioSource player in new List<IPlayerAudioSource>(playerJumpHandlers.Keys))
+            {
+                UnregisterPlayer(player);
+            }
+
+            foreach (ICheckpointAudioSource checkpoint in new List<ICheckpointAudioSource>(checkpointHandlers.Keys))
+            {
+                UnregisterCheckpoint(checkpoint);
+            }
+
+            foreach (IPowerTradeAudioSource tradeSource in new List<IPowerTradeAudioSource>(tradeHandlers.Keys))
+            {
+                UnregisterTradeSource(tradeSource);
             }
         }
 
@@ -333,6 +427,64 @@ namespace Orpaits.Core
             sfxSource.loop = false;
             sfxSource.spatialBlend = 0f;
             sfxSource.outputAudioMixerGroup = sfxOutputGroup;
+
+            ApplyMusicVolume();
+            ApplySfxVolume();
+        }
+
+        private void ApplySettingsFromChannel()
+        {
+            musicVolume = AudioSettingsChannel.MusicVolume;
+            sfxVolume = AudioSettingsChannel.SfxVolume;
+            musicMuted = AudioSettingsChannel.IsMusicMuted;
+            sfxMuted = AudioSettingsChannel.IsSfxMuted;
+
+            ApplyMusicVolume();
+            ApplySfxVolume();
+        }
+
+        private void HandleMusicVolumeChanged(float volume)
+        {
+            musicVolume = volume;
+            ApplyMusicVolume();
+        }
+
+        private void HandleSfxVolumeChanged(float volume)
+        {
+            sfxVolume = volume;
+            ApplySfxVolume();
+        }
+
+        private void HandleMusicMutedChanged(bool muted)
+        {
+            musicMuted = muted;
+            ApplyMusicVolume();
+        }
+
+        private void HandleSfxMutedChanged(bool muted)
+        {
+            sfxMuted = muted;
+            ApplySfxVolume();
+        }
+
+        private void ApplyMusicVolume()
+        {
+            float appliedVolume = musicMuted ? 0f : musicVolume;
+            if (musicSource != null)
+                musicSource.volume = appliedVolume;
+
+            if (useAudioMixerForVolume)
+                SetMixerVolume(musicVolumeParameter, appliedVolume);
+        }
+
+        private void ApplySfxVolume()
+        {
+            float appliedVolume = sfxMuted ? 0f : sfxVolume;
+            if (sfxSource != null)
+                sfxSource.volume = appliedVolume;
+
+            if (useAudioMixerForVolume)
+                SetMixerVolume(sfxVolumeParameter, appliedVolume);
         }
 
         private AudioSource CreateManagedSource(string sourceName)
@@ -354,7 +506,16 @@ namespace Orpaits.Core
 
             float clamped = Mathf.Clamp01(normalizedVolume);
             float decibels = clamped <= 0.0001f ? -80f : Mathf.Log10(clamped) * 20f;
-            audioMixer.SetFloat(parameterName, decibels);
+
+            try
+            {
+                audioMixer.SetFloat(parameterName, decibels);
+            }
+            catch (ArgumentException)
+            {
+                Debug.LogWarning($"[AudioManager] Mixer parameter '{parameterName}' is not exposed. Falling back to AudioSource volume only.");
+                useAudioMixerForVolume = false;
+            }
         }
     }
 }

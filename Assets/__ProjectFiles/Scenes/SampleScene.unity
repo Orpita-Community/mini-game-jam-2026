@@ -998,6 +998,7 @@ MonoBehaviour:
   startPoint: {fileID: 0}
   tradePlayerPrefsKey: Antivirus_Trade_Completed
   animator: {fileID: 115275103}
+  powerTradeSfx: {fileID: 0}
 --- !u!61 &115275100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2569,6 +2570,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 354126034}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &354126034
 SpriteRenderer:
   serializedVersion: 3
@@ -4024,6 +4026,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 0}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &583211119
 SpriteRenderer:
   serializedVersion: 3
@@ -6536,6 +6539,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
       propertyPath: leftBound
       value: -12.8
       objectReference: {fileID: 0}
@@ -6608,6 +6615,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
       propertyPath: leftBound
       value: -9.95
@@ -6694,6 +6705,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
       propertyPath: leftBound
       value: -11.6
       objectReference: {fileID: 0}
@@ -6767,6 +6782,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
       propertyPath: leftBound
       value: -0.46
       objectReference: {fileID: 0}
@@ -6839,6 +6858,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
+      propertyPath: damageSfx
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 288738434933447094, guid: 59b0204a35893bc4395cda288247f574, type: 3}
       propertyPath: leftBound
       value: -10.06
@@ -8167,6 +8190,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 0}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &1197322631
 SpriteRenderer:
   serializedVersion: 3
@@ -11173,6 +11197,22 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
+      propertyPath: jumpSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
+      propertyPath: hitHurtSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
+      propertyPath: gameOverSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
+      propertyPath: throwDiskSfx
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475729890687712529, guid: bd7ff55299c3cf645a4797bfdc473059, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 192
       objectReference: {fileID: 0}
@@ -11212,7 +11252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Core.GameManager
   mainMenuScene: MainMenu
   gameplayScene: SampleScene
-  bossArenaScene: BossArena
+  bossArenaScene: Boss
 --- !u!4 &1693523351
 Transform:
   m_ObjectHideFlags: 0
@@ -12360,6 +12400,7 @@ MonoBehaviour:
   inactiveSprite: {fileID: 7756633124044794404, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   activeSprite: {fileID: -2058111565287974306, guid: b27b2d7458603df4b9c37127b17b6965, type: 3}
   spriteRenderer: {fileID: 0}
+  checkpointSfx: {fileID: 0}
 --- !u!212 &1862038503
 SpriteRenderer:
   serializedVersion: 3

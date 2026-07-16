@@ -1,4 +1,5 @@
 using UnityEngine;
+using Orpaits.Core;
 
 namespace Orpaits.Environment
 {
@@ -14,7 +15,7 @@ namespace Orpaits.Environment
     /// level-design-260712_2153.md (Checkpoints section)
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public class Checkpoint : MonoBehaviour
+    public class Checkpoint : MonoBehaviour, ICheckpointAudioSource
     {
         [Header("Checkpoint Settings")]
         [SerializeField]
@@ -33,8 +34,17 @@ namespace Orpaits.Environment
         [SerializeField]
         private SpriteRenderer spriteRenderer;
 
+        [Header("Audio")]
+        [SerializeField]
+        private AudioClip checkpointSfx;
+
         /// <summary>Fired when this checkpoint is activated.</summary>
         public event System.Action<Checkpoint> OnActivated;
+
+        /// <summary>Fired when this checkpoint is activated for audio observation.</summary>
+        public event System.Action OnCheckpointActivated;
+
+        public AudioClip CheckpointSfx => checkpointSfx;
 
         /// <summary>Is this checkpoint currently activated?</summary>
         public bool IsActivated { get; private set; }
@@ -75,6 +85,7 @@ namespace Orpaits.Environment
                 spriteRenderer.sprite = activeSprite;
 
             OnActivated?.Invoke(this);
+            OnCheckpointActivated?.Invoke();
             Debug.Log($"[Checkpoint] Activated: {checkpointID} at {transform.position}");
         }
 
