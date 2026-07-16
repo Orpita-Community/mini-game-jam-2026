@@ -3,9 +3,9 @@ using UnityEngine;
 namespace Orpaits.Core
 {
     /// <summary>
-    /// Camera follows the player vertically as they climb through the OS levels.
-    /// The camera only moves upward, creating the feeling of a continuous climb.
-    /// Horizontal movement is free within the view.
+    /// Camera follows the player vertically (up AND down) as they climb through
+    /// the OS levels. The camera is locked horizontally — it never moves left or
+    /// right with the player, only tracking on the Y axis.
     /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraFollower : MonoBehaviour
@@ -20,22 +20,27 @@ namespace Orpaits.Core
         private float followSpeed = 5f;
 
         [SerializeField]
-        [Tooltip("Offset from target position")]
-        private Vector3 offset = new Vector3(0, 2, -10);
+        [Tooltip("Vertical offset from target position")]
+        private float yOffset = 2f;
+
+        [SerializeField]
+        [Tooltip("Fixed Z position of the camera")]
+        private float zPosition = -10f;
 
         [Header("Vertical Constraints")]
         [SerializeField]
-        [Tooltip("Lowest Y position the camera can go")]
+        [Tooltip("Lowest Y position the camera can go (level floor)")]
         private float minY = 0f;
 
-        [SerializeField]
-        [Tooltip("If true, camera only moves upward (never down)")]
-        private bool lockUpwardProgression = true;
-
+        // The camera's X never changes — captured once at Awake.
+        private float lockedX;
         private float currentY;
 
         private void Awake()
         {
+            // Lock the horizontal position to wherever the camera starts in the scene.
+            lockedX = transform.position.x;
+
             if (target == null)
             {
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -45,12 +50,8 @@ namespace Orpaits.Core
 
             if (target != null)
             {
-                currentY = target.position.y + offset.y;
-                transform.position = new Vector3(
-                    target.position.x + offset.x,
-                    Mathf.Max(target.position.y + offset.y, minY),
-                    offset.z
-                );
+                currentY = Mathf.Max(target.position.y + yOffset, minY);
+                transform.position = new Vector3(lockedX, currentY, zPosition);
             }
         }
 
@@ -58,25 +59,13 @@ namespace Orpaits.Core
         {
             if (target == null) return;
 
-            float targetY = target.position.y + offset.y;
-
-            if (lockUpwardProgression && targetY < currentY)
-            {
-                // Camera stays at highest point reached
-                targetY = currentY;
-            }
-
-            // Smooth follow
+            // Smoothly follow the target on Y in BOTH directions (up and down).
+            float targetY = Mathf.Max(target.position.y + yOffset, minY);
             currentY = Mathf.Lerp(currentY, targetY, followSpeed * Time.deltaTime);
-
-            // Clamp to min Y
             currentY = Mathf.Max(currentY, minY);
 
-            transform.position = new Vector3(
-                target.position.x + offset.x,
-                currentY,
-                offset.z
-            );
+            // X stays constant — camera does not track the player horizontally.
+            transform.position = new Vector3(lockedX, currentY, zPosition);
         }
 
         /// <summary>
@@ -87,18 +76,18 @@ namespace Orpaits.Core
             target = newTarget;
             if (target != null)
             {
-                currentY = target.position.y + offset.y;
+                currentY = Mathf.Max(target.position.y + yOffset, minY);
             }
         }
 
         /// <summary>
         /// Resets the camera Y tracking (e.g., on new zone or checkpoint respawn).
-        /// Allows camera to move down again if lockUpwardProgression is on.
+        /// Re-syncs the smoothed Y to the target so the camera snaps back to the player.
         /// </summary>
         public void ResetVerticalTracking()
         {
             if (target != null)
-                currentY = target.position.y + offset.y;
+                currentY = Mathf.Max(target.position.y + yOffset, minY);
         }
     }
 }
