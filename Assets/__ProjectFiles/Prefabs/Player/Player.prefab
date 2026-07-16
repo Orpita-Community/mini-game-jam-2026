@@ -224,6 +224,10 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   throwAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  jumpSfx: {fileID: 8300000, guid: 66b09b3357cee764db00e33aeae60ee9, type: 3}
+  hitHurtSfx: {fileID: 8300000, guid: c73cd796474e6144c95282ceccd31370, type: 3}
+  gameOverSfx: {fileID: 8300000, guid: bae3f2c78bcdf534ba3ff543a41b767d, type: 3}
+  throwDiskSfx: {fileID: 8300000, guid: 3d7a0edb57446534985984eb09e14c52, type: 3}
 --- !u!114 &2432447492602523463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Orpaits.Visuals.PlayerAnimationController
   playerController: {fileID: 7475729890687712529}
+  idleStateName: Player_Idle
 --- !u!95 &6221694024904819944
 Animator:
   serializedVersion: 7

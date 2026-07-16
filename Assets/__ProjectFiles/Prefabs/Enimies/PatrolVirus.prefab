@@ -187,8 +187,6 @@ MonoBehaviour:
   enemyCollider: {fileID: 7294384955353901221}
   spriteRenderer: {fileID: 2550394058228114669}
   damageSfx: {fileID: 0}
-  deathSfx: {fileID: 0}
-  phaseTransitionSfx: {fileID: 0}
   patrolMode: 0
   moveSpeed: 2
   leftBound: -4

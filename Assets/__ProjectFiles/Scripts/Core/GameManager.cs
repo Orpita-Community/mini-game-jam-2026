@@ -99,7 +99,16 @@ namespace Orpaits.Core
 
         // --- Scene transitions ---
 
-        public void StartGame() => LoadScene(gameplayScene);
+        /// <summary>
+        /// Starts a fresh run. Clears run-scoped persistence first — the Anti-Virus
+        /// trade flag lives in PlayerPrefs and would otherwise leave the NPC spent
+        /// forever, across new games and app restarts.
+        /// </summary>
+        public void StartGame()
+        {
+            NPC.AntiVirusNPC.ClearPersistedTradeState();
+            LoadScene(gameplayScene);
+        }
         public void LoadMainMenu() => LoadScene(mainMenuScene);
         public void LoadBossArena() => LoadScene(bossArenaScene);
         public void ReloadCurrentScene() => LoadScene(SceneManager.GetActiveScene().name);

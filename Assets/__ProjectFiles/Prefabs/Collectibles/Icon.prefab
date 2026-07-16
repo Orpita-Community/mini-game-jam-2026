@@ -255,5 +255,5 @@ MonoBehaviour:
   bobAmplitude: 0.1
   bobFrequency: 1.5
   pickupVFX: {fileID: 0}
-  pickupSFX: {fileID: 0}
+  pickupSFX: {fileID: 8300000, guid: a53a3255432b20c4cbcb1d239d9c369a, type: 3}
   targetTag: Player

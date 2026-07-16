@@ -99,7 +99,10 @@ namespace Orpaits.NPC
         [Header("Persistence")]
         [SerializeField]
         [Tooltip("PlayerPrefs key used to remember that this NPC has traded.")]
-        private string tradePlayerPrefsKey = "Antivirus_Trade_Completed";
+        private string tradePlayerPrefsKey = DefaultTradePlayerPrefsKey;
+
+        /// <summary>Default PlayerPrefs key holding the "already traded" flag.</summary>
+        public const string DefaultTradePlayerPrefsKey = "Antivirus_Trade_Completed";
 
         [Header("Animation")]
         [SerializeField]
@@ -373,9 +376,21 @@ namespace Orpaits.NPC
                 spriteRenderer.sprite = inactiveSprite;
         }
 
+        /// <summary>
+        /// Wipes the persisted "already traded" flag. Call when a new game starts —
+        /// the flag is machine-wide and survives scene loads and app restarts, so
+        /// without this a player who traded once could never trade again.
+        /// </summary>
+        public static void ClearPersistedTradeState()
+        {
+            PlayerPrefs.DeleteKey(DefaultTradePlayerPrefsKey);
+            PlayerPrefs.Save();
+        }
+
         // ─────────────────────────── Debug ───────────────────────────────
 
-        /// <summary>Editor-only: clears the PlayerPrefs flag so the NPC can trade again.</summary>
+        /// <summary>Clears the PlayerPrefs flag so the NPC can trade again.</summary>
+        [ContextMenu("Reset Trade State")]
         public void DebugResetTrade()
         {
             PlayerPrefs.DeleteKey(tradePlayerPrefsKey);
